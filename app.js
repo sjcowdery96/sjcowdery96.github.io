@@ -40,123 +40,42 @@ class Gameboard {
                 this.spaces.push(new Space(index, 'XX'))
             }
             //everything else is the interior of the board
-            else this.spaces.push(new Space(index, '++'))
-        }
-    }
-
-    updateScore() {
-        //updates scores
-    }
-
-    updateSeedBanks() {
-        //updates seedbank data
-    }
-
-    processMove(move) {
-        if ((move.getPlayer == this.currentPlayer) && this.checkValidPosition(move.position)) {
-            //checks if valid move
+            else {
+                //creates a "live" space in the board
+                this.spaces.push(new Space(index, '++'))
+            }
 
         }
-        else {
-            //process invalid move
+        //now that all the spaces are initialized, we need to update their neighbor states
+        for (let index = this.borderWidth; index < ((this.borderWidth * this.borderWidth) - this.borderWidth); index++) {
+            //for each new created space in our array, update their neighborspaces
+            if ((index % this.borderWidth != 0) && (index % this.borderWidth != (this.borderWidth - 1))) {
+                //if our logic above worked, the only updated Spaces will not be XX's
+                this.updateNeighborStates(index)
+            }
         }
+
+
     }
-    checkValidPosition(position) {
-        // first row border
-        if (position < this.borderWidth) {
-            console.log
-            return false;
-        }
-        // left side border
-        else if (position % this.borderWidth == 0) {
-            return false;
-        }
-        // right side border
-        else if (position % this.borderWidth == (this.borderWidth - 1)) {
-            return false;
-        }
-        //border on bottom
-        else if (position > ((this.borderWidth * this.borderWidth) - this.borderWidth)) {
-            return false;
-        }
-        //everything else is the interior of the board
-        else return true;
-    }
-
-}
-
-class Move {
-    //player is hopefully a string
-    //position is hopefully a Space ID
-    constructor(player, position) {
-        this.player = player;
-        this.position = position;
-    }
-    getPosition() {
-        return this.position;
-    }
-    getPlayer() {
-        return this.player;
-    }
-}
-
-class Space {
-    constructor(id, state) {
-        this.id = id; //each square will be created with an ID
-        this.state = state //can be null, XX, R, T
-    }
-    //define our basic variables for this object
-    points = 0;
-    player = null; //will be "GG" or "BB" when pieces are placed
-    burst = false;
-    seedBank = 0;
-
-    neighborStates = [null, null, null, null, null, null, null] // array to hold 8 neighbor states
-    /*
-        map of neighbor states, X is this Space, ID's mapped clockwise beginning at top
-
-                07 00 01
-                06 XX 02
-                05 04 03
-
-        */
-
-
-    printInfo() {
-        console.log(`Hello, my ID is ${this.id} and my info is ${this.player}${this.state}`);
-    }
-
-    seedBurst() {
-        //if we have bank to burst, return that value
-        if (this.seedBank > 0) {
-            this.burst = true;
-            return this.seedBank;
-        }
-        //else return false -- we have no bank
-        else return false;
-    }
-
-    //update the neighborstate
-    //WORK IN PROGRESS -- STILL NOT WORKING
-    updateNeighborStates(board) {
+    updateNeighborStates(id) {
         //feeds in the array of spaces
         //every gameBoard has a width (plus border of XX)
-        const widthPlusBorder = board.width + 2;
 
-        if (this.id < widthPlusBorder) {
+        //sanity checks to ensure we did not catch a border space
+        if (this.spaces[id] < this.borderWidth) {
             //if this id is less than the width plus border 
             //we are in the first row of spaces = edge of the board
             console.log("edge of board")
         }
-        else if (this.id % widthPlusBorder == 0) {
+        else if (this.spaces[id] % this.borderWidth == 0) {
             //if we are at the left edge of the board where mod width == 0
             console.log("edge of board")
         }
-        else if (this.id % widthPlusBorder == (widthPlusBorder - 1)) {
+        else if (this.spaces[id] % this.borderWidth == (this.borderWidth - 1)) {
             //of we are at the right edge of the board where mod width = width - 1
             console.log("edge of board")
         }
-        else if (this.id > ((widthPlusBorder * widthPlusBorder) - widthPlusBorder) == 0) {
+        else if (this.spaces[id] > ((this.borderWidth * this.borderWidth) - this.borderWidth)) {
             //if we are exactly one width from the end of the ID's == last row of the board
             console.log("edge of board")
         }
@@ -210,27 +129,122 @@ class Space {
                 XX 42 43 44 45 46 47 48 XX
                 XX XX XX XX XX XX XX XX XX
             */
+            console.log(this.spaces[id])
             //first, set the horizontal and vertical neighbors...
             //grab the Space above us and update it's bottom middle neigborState
-            board.spaces[this.id - widthPlusBorder].neighborStates[4] = this.state;
+            this.spaces[id - this.borderWidth].neighborStates[4] = this.spaces[id].state;
             //grab the Space below us and update it's top middle neigborState
-            board.spaces[this.id + widthPlusBorder].neighborStates[0] = this.state;
+            this.spaces[id + this.borderWidth].neighborStates[0] = this.spaces[id].state;
             //grab the Space to the right of us and update it's left neigborState
-            board.spaces[this.id + 1].neighborStates[6] = this.state;
+            this.spaces[id + 1].neighborStates[6] = this.spaces[id].state;
             //grab the Space to the left of us and update it's right neigborState
-            board.spaces[this.id - 1].neighborStates[2] = this.state;
+            this.spaces[id - 1].neighborStates[2] = this.spaces[id].state;
 
             //now the diagonal neighbors...
             //grab the Space above us to the left and update it's bottom right neigborState
-            board.spaces[this.id - (widthPlusBorder - 1)].neighborStates[3] = this.state;
+            this.spaces[id - (this.borderWidth - 1)].neighborStates[3] = this.spaces[id].state;
             //grab the Space below us to the left and update it's top right neigborState
-            board.spaces[this.id + (widthPlusBorder - 1)].neighborStates[1] = this.state;
+            this.spaces[id + (this.borderWidth - 1)].neighborStates[1] = this.spaces[id].state;
             //grab the Space above us to the right and update it's bottom left neigborState
-            board.spaces[this.id - (widthPlusBorder + 1)].neighborStates[5] = this.state;
+            this.spaces[id - (this.borderWidth + 1)].neighborStates[5] = this.spaces[id].state;
             //grab the Space below us to the right and update it's top left neigborState
-            board.spaces[this.id + (widthPlusBorder + 1)].neighborStates[7] = this.state;
+            this.spaces[id + (this.borderWidth + 1)].neighborStates[7] = this.spaces[id].state;
         }
 
+    }
+    updateScore() {
+        //updates scores
+    }
+
+    updateSeedBanks() {
+        //updates seedbank data
+    }
+
+    processMove(move) {
+        if ((move.getPlayer == this.currentPlayer) && this.checkValidPosition(move.position)) {
+            //checks if valid move
+
+        }
+        else {
+            //process invalid move
+        }
+    }
+    checkValidPosition(position) {
+        // first row border
+        if (position < this.borderWidth) {
+            console.log
+            return false;
+        }
+        // left side border
+        else if (position % this.borderWidth == 0) {
+            return false;
+        }
+        // right side border
+        else if (position % this.borderWidth == (this.borderWidth - 1)) {
+            return false;
+        }
+        //border on bottom
+        else if (position > ((this.borderWidth * this.borderWidth) - this.borderWidth)) {
+            return false;
+        }
+        //everything else is the interior of the board
+        else return true;
+    }
+
+}
+
+
+class Move {
+    //player is hopefully a string
+    //position is hopefully a Space ID
+    constructor(player, position) {
+        this.player = player;
+        this.position = position;
+    }
+    getPosition() {
+        return this.position;
+    }
+    getPlayer() {
+        return this.player;
+    }
+}
+
+
+//Hardest working class in the game logic, the Space object
+class Space {
+    constructor(id, state) {
+        this.id = id; //each square will be created with an ID
+        this.state = state //can be null, XX, R, T
+    }
+    //define our basic variables for this object
+    points = 0;
+    player = null; //will be "GG" or "BB" when pieces are placed
+    burst = false;
+    seedBank = 0;
+
+    neighborStates = ["XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"] // array to hold 8 neighbor states
+    /*
+        map of neighbor states, X is this Space, ID's mapped clockwise beginning at top
+
+                07 00 01
+                06 XX 02
+                05 04 03
+
+        */
+
+
+    printInfo() {
+        console.log(`Hello, my ID is ${this.id} and my info is ${this.player}${this.state}`);
+    }
+
+    seedBurst() {
+        //if we have bank to burst, return that value
+        if (this.seedBank > 0) {
+            this.burst = true;
+            return this.seedBank;
+        }
+        //else return false -- we have no bank
+        else return false;
     }
 }
 
@@ -282,6 +296,7 @@ function printBoard(board) {
     mainBoard.textContent = textBoard;
 }
 
+//END OF GAME LOGIC
 
 //very simple input function to get us started
 function checkInput() {
