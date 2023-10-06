@@ -10,10 +10,19 @@
 <body>
     <h1>Basic Virtual Koya</h1>
     <div id="mainBoard">
-        <p id="textSpace"> here is some text </p>
+        <p id="textSpace"> here is some text -- this means you screwed up </p>
     </div>
-    <div class="inputs"><input type="text" id="input" />
-        <button type="button" onclick="checkInput()">Submit</button>
+    <div class="inputs">
+        <h3>Possible Pieces: XX, S1, S2</h3>
+        <div>
+            <label>Piece</label> <input type="text" id="state" />
+        </div>
+        <div>
+            <label>ID</label> <input type="text" id="space-id" />
+        </div>
+    </div>
+    <div>
+        <button type="button" onclick="processInput()">Submit Input</button>
         <p id="output"></p>
     </div>
 

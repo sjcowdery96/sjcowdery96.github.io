@@ -1,8 +1,7 @@
 //this file will be used to actuall deal with the user inputs etc.
-
 //very simple input function to get us started
 function checkInput() {
-    const input = document.getElementById("input").value;
+    input = document.getElementById("input").value;
     const integerValue = parseInt(input, 10);
 
     if (!Number.isInteger(integerValue)) {
@@ -10,4 +9,6 @@ function checkInput() {
     } else {
         document.getElementById("output").innerHTML = `Input is an integer: ${input}`;
     }
+    userInput = input;
 }
+

@@ -1,6 +1,9 @@
 const mainBoard = document.querySelector('#textSpace') //the place to render text
 mainBoard.style.whiteSpace = 'pre-wrap';
 
+let ouputPrint = document.getElementById("output")
+let userInput;
+
 let textBoard = '' //holds the text in a string
 let allStates = []; //hold the states of all Spaces
 let gameBoard = []; //creates an array of Spaces
@@ -54,9 +57,9 @@ class Gameboard {
                 this.updateNeighborStates(index)
             }
         }
-
-
     }
+
+
     updateNeighborStates(id) {
         //feeds in the array of spaces
         //every gameBoard has a width (plus border of XX)
@@ -129,7 +132,7 @@ class Gameboard {
                 XX 42 43 44 45 46 47 48 XX
                 XX XX XX XX XX XX XX XX XX
             */
-            console.log(this.spaces[id])
+            //console.log(this.spaces[id])
             //first, set the horizontal and vertical neighbors...
             //grab the Space above us and update it's bottom middle neigborState
             this.spaces[id - this.borderWidth].neighborStates[4] = this.spaces[id].state;
@@ -161,14 +164,18 @@ class Gameboard {
     }
 
     processMove(move) {
-        if ((move.getPlayer == this.currentPlayer) && this.checkValidPosition(move.position)) {
+        if ((move.player == this.currentPlayer)) {
             //checks if valid move
-
+            console.log("valid move")
         }
         else {
             //process invalid move
+            console.log("INVALID MOVE")
+            console.log(" Player Move " + move.player + " does not equal current player" + this.currentPlayer)
+
         }
     }
+    //This is the one that is buggy
     checkValidPosition(position) {
         // first row border
         if (position < this.borderWidth) {
@@ -197,15 +204,19 @@ class Gameboard {
 class Move {
     //player is hopefully a string
     //position is hopefully a Space ID
-    constructor(player, position) {
+    constructor(player, piece, position) {
         this.player = player;
         this.position = position;
+        this.piece = piece;
     }
     getPosition() {
         return this.position;
     }
     getPlayer() {
         return this.player;
+    }
+    getPiece() {
+        return this.piece;
     }
 }
 
@@ -297,17 +308,32 @@ function printBoard(board) {
 
 //END OF GAME LOGIC
 
-//very simple input function to get us started
-function checkInput() {
-    const input = document.getElementById("input").value;
-    const integerValue = parseInt(input, 10);
+//BEGIN USER INPUT LOGIC
 
-    if (!Number.isInteger(integerValue)) {
-        document.getElementById("output").innerHTML = `Not an Integer -- Input is: ${input}`;
+//very simple input function to get us started
+function processInput() {
+    const state = document.querySelector("#state").value;
+    const id = document.querySelector("#space-id").value;
+    const idValue = parseInt(id, 10);
+
+    // Create a move object to store the inputs.
+
+
+    //checks if the ID is actually an integer
+    if (!Number.isInteger(idValue)) {
+        //bad input
+        ouputPrint.innerHTML = `Not an Integer -- Input is: ${idValue}`;
+
     } else {
-        document.getElementById("output").innerHTML = `Input is an integer: ${input}`;
+        //good input
+        const recentMove = new Move(myBoard.currentPlayer, state, idValue);
+        ouputPrint.innerHTML = `Player is ${myBoard.currentPlayer} Input is ID: ${recentMove.position} and state is ${recentMove.piece}`;
+        myBoard.processMove(recentMove);
+        myBoard.currentPlayer = (myBoard.currentPlayer + 1) % 2;
     }
+
 }
+
 //always remember to call your functions AFTER initializing everything
 
 //createBoard(7)
@@ -318,11 +344,16 @@ console.log(myBoard)
 printBoard(myBoard)
 
 
+
 /*
 left to do:
-- Start playing with inputs
+- need to check logic on checkValidPosition
+- need to start actually updating data based on moves processed
 
 done:
 - render board correctly in simple text form
+- updateNeighbors is working!
+- Start playing with inputs
+- processMove function "one equal one" fixed
 */
 
