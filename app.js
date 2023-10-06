@@ -141,12 +141,12 @@ class Gameboard {
             this.spaces[id - 1].neighborStates[2] = this.spaces[id].state;
 
             //now the diagonal neighbors...
-            //grab the Space above us to the left and update it's bottom right neigborState
-            this.spaces[id - (this.borderWidth - 1)].neighborStates[3] = this.spaces[id].state;
+            //grab the Space above us to the left and update it's bottom left neigborState
+            this.spaces[id - (this.borderWidth - 1)].neighborStates[5] = this.spaces[id].state;
             //grab the Space below us to the left and update it's top right neigborState
             this.spaces[id + (this.borderWidth - 1)].neighborStates[1] = this.spaces[id].state;
-            //grab the Space above us to the right and update it's bottom left neigborState
-            this.spaces[id - (this.borderWidth + 1)].neighborStates[5] = this.spaces[id].state;
+            //grab the Space above us to the right and update it's bottom right neigborState
+            this.spaces[id - (this.borderWidth + 1)].neighborStates[3] = this.spaces[id].state;
             //grab the Space below us to the right and update it's top left neigborState
             this.spaces[id + (this.borderWidth + 1)].neighborStates[7] = this.spaces[id].state;
         }
@@ -231,7 +231,6 @@ class Space {
                 05 04 03
 
         */
-
 
     printInfo() {
         console.log(`Hello, my ID is ${this.id} and my info is ${this.player}${this.state}`);
