@@ -444,6 +444,7 @@ printBoard()
 /*
 left to do:
 - check for koyas
+- update score
 
 done:
 - tracking supply of seeds and deserts
