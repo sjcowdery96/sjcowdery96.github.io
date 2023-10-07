@@ -1,9 +1,12 @@
 const mainBoard = document.querySelector('#textSpace') //the place to render text
 const gameStats = document.querySelector('#game-stats') //the place to render text
+gameStats.innerHTML = `Player 1:\n Seeds: 36 Deserts: 4\n Player 2:\n Seeds: 36 Deserts: 4`;
+
 
 //mainBoard.style.whiteSpace = 'pre-wrap';
 
 let ouputPrint = document.getElementById("output")
+ouputPrint.textContent = `Player-1's move`
 let userInput;
 
 let textBoard = '' //holds the text in a string
@@ -21,6 +24,9 @@ class Gameboard {
     p1SeedBank = 0;
     p2SeedBank = 0;
     currentPlayer = 1;
+    //player supply [seeds, deserts]
+    p1Supply = [36, 4]
+    p2Supply = [36, 4]
 
     constructor(width) {
         //the only input we need is width
@@ -165,11 +171,103 @@ class Gameboard {
     updateSeedBanks() {
         //updates seedbank data
     }
+    //challenges here
+    checkMove(move) {
+        //confirms target space is not occupied
+        if (this.spaces[move.position].player == null) {
+            //confirms current player is player move
+            if ((move.player == this.currentPlayer)) {
+                //confirms this position is valid
+                if (this.checkValidPosition(move.position)) {
+                    //process for player one move
+                    if (move.player == 1) {
+                        //if the move is XX, check if we have deserts left
+                        if (move.piece == "XX" && (this.p1Supply[1] > 0)) {
+                            //assigns the player of the space
+                            this.spaces[move.position].player = "P1"
+                            return true;
+                        }
+                        //if the move is Seed, check if we have seeds left
+                        else if (move.piece == "S1" && (this.p1Supply[0] > 0)) {
+                            //assigns the player of the space
+                            this.spaces[move.position].player = "P1"
+                            return true;
+                        }
+                        else {
+                            //if supply is empty, read supply emtpty
+                            console.log("not valid move for P1" + "\n Supply: " + this.p1Supply[0] + this.p1Supply[1]);
+                            return false;
+                        }
+                    }
+                    else {
+                        //same logic for player 2
+                        if (move.piece == "XX" && (this.p2Supply[1] > 0)) {
+                            //assigns the player of the space
+                            this.spaces[move.position].player = "P2"
+                            return true;
+                        }
+                        else if (move.piece == "S2" && (this.p2Supply[0] > 0)) {
+                            //assigns the player of the space
+                            this.spaces[move.position].player = "P2"
+                            return true;
+                        }
+                        else {
+                            console.log("not valid move for P2" + "\n Supply: " + this.p2Supply[0] + this.p2Supply[1]);
+                            return false;
+                        }
+                    }
+                }
+                // invalid position
+                else return false;
+            }
+            else {
+                console.log("wrong player")
+            }
+        }
+        else {
+            //space is occupied return false
+            return false;
+        }
+    }
 
     processMove(move) {
-        if ((move.player == this.currentPlayer) && this.checkValidPosition(move.position)) {
-            //checks if valid move
-            console.log("valid move " + this.checkValidPosition(move.position))
+        //checks if valid move
+        if (this.checkMove(move)) {
+            //grab the space with the ID then updates the state
+            this.spaces[move.position].state = move.piece;
+            //state change has occured, update neighbors
+            this.updateNeighborStates(move.position)
+            //update the supply of pieces for each player
+            if (move.player == 1) {
+                if (move.piece == "XX") {
+                    //decrement deserts 
+                    this.p1Supply[1]--;
+                }
+                else if (move.piece == "S1") {
+                    //decrement seeds
+                    this.p1Supply[0]--;
+                }
+                else console.log("That wasn't a valid peice input...")
+            }
+            else {
+                if (move.piece == "XX") {
+                    //decrement deserts 
+                    this.p2Supply[1]--;
+                }
+                else if (move.piece == "S2") {
+                    //decrement seeds
+                    this.p2Supply[0]--;
+                }
+                else console.log("That wasn't a valid peice input...")
+
+            }
+            //update current player
+            if (this.currentPlayer == 1) {
+                this.currentPlayer = 2;
+            }
+            else this.currentPlayer = 1;
+            //has to re-print the board
+            printBoard()
         }
         else {
             //process invalid move
@@ -212,15 +310,6 @@ class Move {
         this.player = player;
         this.position = position;
         this.piece = piece;
-    }
-    getPosition() {
-        return this.position;
-    }
-    getPlayer() {
-        return this.player;
-    }
-    getPiece() {
-        return this.piece;
     }
 }
 
@@ -291,15 +380,15 @@ function createBoard(width) {
 }
 */
 
-function printBoard(board) {
+function printBoard() {
     //maps the state values of each Space into the textBoard
-    allStates = board.spaces.map((space) => space.state);
+    allStates = myBoard.spaces.map((space) => space.state);
 
     const boardFormattedStates = allStates.map((element, index) => {
         if (index === 0) {
             return element;
         }
-        else if (index % (board.width + 2) === 0) {
+        else if (index % (myBoard.width + 2) === 0) {
             return `\n` + element;
         } else {
             return element;
@@ -331,9 +420,12 @@ function processInput() {
     } else {
         //good input
         const recentMove = new Move(myBoard.currentPlayer, state, idValue);
-        ouputPrint.innerHTML = `Player is ${myBoard.currentPlayer} Input is ID: ${recentMove.position} and state is ${recentMove.piece}`;
         myBoard.processMove(recentMove);
-        myBoard.currentPlayer = (myBoard.currentPlayer + 1) % 2;
+        //update game stats
+        ouputPrint.innerHTML = `Player-${myBoard.currentPlayer}'s move`;
+        gameStats.style.whitespace = 'pre-wrap'
+        gameStats.innerHTML = `Player 1:\n Seeds: ${myBoard.p1Supply[0]} Deserts: ${myBoard.p1Supply[1]}\n Player 2:\n Seeds: ${myBoard.p2Supply[0]} Deserts: ${myBoard.p2Supply[1]}`;
+
     }
 
 }
@@ -345,16 +437,17 @@ function processInput() {
 //console.log(gameBoard)
 const myBoard = new Gameboard(9)
 console.log(myBoard)
-printBoard(myBoard)
+printBoard()
 
 
 
 /*
 left to do:
-
-- need to start actually updating data based on moves processed
+- check for koyas
 
 done:
+- tracking supply of seeds and deserts
+- updating data based on input moves processed
 - fixed check logic on checkValidPosition
 - render board correctly in simple text form
 - updateNeighbors is working!
