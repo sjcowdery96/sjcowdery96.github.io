@@ -1,5 +1,7 @@
 const mainBoard = document.querySelector('#textSpace') //the place to render text
-mainBoard.style.whiteSpace = 'pre-wrap';
+const gameStats = document.querySelector('#game-stats') //the place to render text
+
+//mainBoard.style.whiteSpace = 'pre-wrap';
 
 let ouputPrint = document.getElementById("output")
 let userInput;
@@ -155,6 +157,7 @@ class Gameboard {
         }
 
     }
+
     updateScore() {
         //updates scores
     }
@@ -164,34 +167,35 @@ class Gameboard {
     }
 
     processMove(move) {
-        if ((move.player == this.currentPlayer)) {
+        if ((move.player == this.currentPlayer) && this.checkValidPosition(move.position)) {
             //checks if valid move
-            console.log("valid move")
+            console.log("valid move " + this.checkValidPosition(move.position))
         }
         else {
             //process invalid move
             console.log("INVALID MOVE")
-            console.log(" Player Move " + move.player + " does not equal current player" + this.currentPlayer)
-
         }
     }
     //This is the one that is buggy
     checkValidPosition(position) {
         // first row border
         if (position < this.borderWidth) {
-            console.log
+            console.log("position: " + position + " in top border")
             return false;
         }
         // left side border
         else if (position % this.borderWidth == 0) {
+            console.log("position: " + position + " in left side border")
             return false;
         }
         // right side border
         else if (position % this.borderWidth == (this.borderWidth - 1)) {
+            console.log("position: " + position + " in right side border")
             return false;
         }
         //border on bottom
         else if (position > ((this.borderWidth * this.borderWidth) - this.borderWidth)) {
+            console.log("position: " + position + " in bottom border")
             return false;
         }
         //everything else is the interior of the board
@@ -347,10 +351,11 @@ printBoard(myBoard)
 
 /*
 left to do:
-- need to check logic on checkValidPosition
+
 - need to start actually updating data based on moves processed
 
 done:
+- fixed check logic on checkValidPosition
 - render board correctly in simple text form
 - updateNeighbors is working!
 - Start playing with inputs
