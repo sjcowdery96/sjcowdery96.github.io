@@ -1,3 +1,8 @@
 #textSpace {
     font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    padding: 1%;
+    margin: 1%;
+    height: 205px;
+    width: 315px;
 }
