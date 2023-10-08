@@ -33,6 +33,7 @@ class Gameboard {
     //player supply [seeds, deserts]
     p1Supply = [36, 4]
     p2Supply = [36, 4]
+    updatedNeighbors = 0;
 
     constructor(width) {
         //the only input we need is width
@@ -63,6 +64,7 @@ class Gameboard {
             }
 
         }
+        this.createClickBoard()
         //now that all the spaces are initialized, we need to update their neighbor states
         for (let index = this.borderWidth; index < ((this.borderWidth * this.borderWidth) - this.borderWidth); index++) {
             //for each new created space in our array, update their neighborspaces
@@ -71,7 +73,6 @@ class Gameboard {
                 this.updateNeighborStates(index)
             }
         }
-        this.createClickBoard()
     }
     //creates a UI board of div elements
     createClickBoard() {
@@ -200,45 +201,18 @@ class Gameboard {
 
         })
     }
-    /*
-    Didn't update event listeners.
-    updateClickBoard() {
-        console.log("update Clickboard")
-        //wipe the inner HTML of the clickable Board
-        clickableBoard.innerHTML = "";
-        //creates the board again with the new states
-        this.spaces.forEach((space) => {
-            //creates a new div
-            const square = document.createElement("div")
-            //adds attributes and classes to these divs
-            square.classList.add("square")
-            square.setAttribute("square-id", space.id)
-            //depending on the state, render the board. 
-            if (space.state == "XX") {
-                square.innerHTML = desertPiece;
-            }
-            else if (space.state == "S1") {
-                square.innerHTML = otherSeed;
-                square.firstChild?.setAttribute('draggable', true)
-            }
-            else if (space.state == "S2") {
-                square.innerHTML = seedWheet;
-                square.firstChild?.setAttribute('draggable', true)
-            }
-            else {
-                square.innerHTML = emptyPiece;
-            }
-            clickableBoard.append(square)
 
-        })
-    }
-    */
-
-    //PROBLEMATIC FUNCTION CURRENTLY
     /*
-        need to fix this one
+       Fixed HUGE error -- "id" was reading as a string not an integer
     */
     updateNeighborStates(id) {
+        this.updatedNeighbors++;
+        console.log("update neighbors called #" + this.updatedNeighbors)
+        if (this.updatedNeighbors > 81) {
+            console.log(myBoard)
+        }
+
+        //spaces is the array of spaces within the gameboard
         //feeds in the array of spaces
         //every gameBoard has a width (plus border of XX)
 
@@ -262,6 +236,8 @@ class Gameboard {
         }
 
         else {
+            let movableID = new Number(id)
+            let fixedID = new Number(id)
             /*
             Helpful context for this function:
      
@@ -316,33 +292,34 @@ class Gameboard {
             //HUGE ERROR HERE -- I think when I re-create the board, it is having issues accessing
             //the data "beneath it" since those values have not been created yet building top to bottom
 
-            //wrap everthing in check for null statements
-            if ((this.spaces[(id - this.borderWidth)] !== null) && (this.spaces[(id - this.borderWidth)].neighborStates[4] !== null)) {
-                //grab the Space above us and update it's bottom middle neigborState
-                this.spaces[(id - this.borderWidth)].neighborStates[4] = this.spaces[id];
-            }
-            if ((this.spaces[(id - this.borderWidth)] !== null) && (this.spaces[(id - this.borderWidth)].neighborStates[0] !== null)) {
-                //grab the Space above us and update it's bottom middle neigborState
-                this.spaces[(id - this.borderWidth)].neighborStates[0] = this.spaces[id];
-            }
-            if ((this.spaces[(id + 1)] !== null) && (this.spaces[(id + 1)].neighborStates[6] !== null)) {
-                //grab the Space to the right of us and update it's left neigborState
-                this.spaces[id + 1].neighborStates[6] = this.spaces[id];
-            }
-            if ((this.spaces[id - 1] !== null) && (this.spaces[id - 1].neighborStates[2] !== null)) {
-                //grab the Space to the left of us and update it's right neigborState
-                this.spaces[id - 1].neighborStates[2] = this.spaces[id];
-            }
+            //wrap everthing in check for null statements??
+
+            //grab the Space above us and update it's bottom middle neigborState
+            movableID = fixedID - this.borderWidth;
+            this.spaces[movableID].neighborStates[4] = this.spaces[id].state;
+            //grab the Space above us and update it's bottom middle neigborState
+            movableID = fixedID - this.borderWidth;
+            this.spaces[movableID].neighborStates[0] = this.spaces[id].state;
+            movableID = fixedID + 1;
+            //grab the Space to the right of us and update it's left neigborState
+            this.spaces[movableID].neighborStates[6] = this.spaces[id].state;
+            movableID = fixedID - 2;
+            //grab the Space to the left of us and update it's right neigborState
+            this.spaces[movableID].neighborStates[2] = this.spaces[id].state;
 
             //now the diagonal neighbors...
             //grab the Space above us to the left and update it's bottom left neigborState
-            this.spaces[id - (this.borderWidth - 1)].neighborStates[5] = this.spaces[id];
+            movableID = fixedID - (this.borderWidth - 1);
+            this.spaces[movableID].neighborStates[5] = this.spaces[id].state;
             //grab the Space below us to the left and update it's top right neigborState
-            this.spaces[id + (this.borderWidth - 1)].neighborStates[1] = this.spaces[id];
+            movableID = fixedID + (this.borderWidth - 1);
+            this.spaces[movableID].neighborStates[1] = this.spaces[id].state;
             //grab the Space above us to the right and update it's bottom right neigborState
-            this.spaces[id - (this.borderWidth + 1)].neighborStates[3] = this.spaces[id];
+            movableID = fixedID - (this.borderWidth + 1);
+            this.spaces[movableID].neighborStates[3] = this.spaces[id].state;
             //grab the Space below us to the right and update it's top left neigborState
-            this.spaces[id + (this.borderWidth + 1)].neighborStates[7] = this.spaces[id];
+            movableID = fixedID + (this.borderWidth + 1)
+            this.spaces[movableID].neighborStates[7] = this.spaces[id].state;
         }
 
     }
@@ -427,7 +404,8 @@ class Gameboard {
             //PAUSED
             //this.spaces[move.position].checkKoya()
             //state change has occured, update neighbors
-            //this.updateNeighborStates(move.position)
+            this.updateNeighborStates(move.position)
+
             //update the supply of pieces for each player
             if (move.player == 1) {
                 if (move.piece == "XX") {
@@ -687,19 +665,11 @@ console.log("_______BEGIN LIVE MODE_______")
 
 /*
 left to do:
--- small setback!
-    - need to fix updateNeighbors to not be reduntant
-        it is calling back and forth between neighbors and gumming up all the data
-        maybe we just keep it to states instead of objects? Or we write a SMALLER 
-        version of the function that can't spill out into accidental recurison 
-    - option to just revert to not calling the update neighbor function and just
-        pretend the game is get four in a row or something dumb like that. 
-    - I have a feeling 
-    
 - check for koyas
 - update score
 
 done:
+- HUGE WIN!! Fixed updateNeighbors by creating fixed variables instead of strings
 - tracking supply of seeds and deserts
 - updating data based on input moves processed
 - fixed check logic on checkValidPosition
