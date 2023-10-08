@@ -543,23 +543,6 @@ class Space {
     printInfo() {
         console.log(`Hello, my ID is ${this.id} and my info is ${this.player}${this.state}`);
     }
-    checkforPlusKoya() {
-        //------CHECKING FOR "+" SHAPE KOYA---------
-        //checks if neighbors are null
-        if ((this.neighborStates[0] != null && this.neighborStates[4] != null) && (this.neighborStates[2] != null && this.neighborStates[6] != null)) {
-            //checks if neighbor states top and bottom are pairs
-            if ((this.neighborStates[0] == this.neighborStates[4]) && this.state == this.neighborStates[4]) {
-                console.log("one branch matches ")
-                if ((this.neighborStates[2] == this.neighborStates[6]) && (this.state == this.neighborStates[2])) {
-                    console.log('plus shape koya at ' + this.id)
-                    if (this.player == "P1") {
-                        this.state = "T1"
-                    }
-                    else this.state = "T2"
-                }
-            }
-        }
-    }
 
     //fixed!
     checkKoya() {
@@ -575,6 +558,7 @@ class Space {
                     console.log("one branch matches ")
                     if ((this.neighborStates[2] == this.neighborStates[6]) && (this.state == this.neighborStates[2])) {
                         console.log('plus shape koya at ' + this.id)
+                        this.points++;
                         if (this.player == "P1") {
                             this.state = "T1"
                         }
@@ -761,41 +745,9 @@ function printBoard() {
 //END OF FUNCTIONING GAME LOGIC
 
 
-
-//BEGIN USER INPUT LOGIC
-
-//THS FUNCTION IS NO LONGER USED
-/*
-function processInput() {
-    const state = document.querySelector("#state").value;
-    const id = document.querySelector("#space-id").value;
-    const idValue = parseInt(id, 10);
-
-    // Create a move object to store the inputs.
-
-    //checks if the ID is actually an integer
-    if (!Number.isInteger(idValue)) {
-        //bad input
-        ouputPrint.innerHTML = `Not an Integer -- Input is: ${idValue}`;
-
-    } else {
-        //good input
-        const recentMove = new Move(myBoard.currentPlayer, state, idValue);
-        myBoard.processMove(recentMove);
-        //update game stats
-        ouputPrint.innerHTML = `Player-${myBoard.currentPlayer}'s move`;
-        gameStats.style.whitespace = 'pre-wrap'
-        gameStats.innerHTML = `Player 1:\n Seeds: ${myBoard.p1Supply[0]} Deserts: ${myBoard.p1Supply[1]}\n Player 2:\n Seeds: ${myBoard.p2Supply[0]} Deserts: ${myBoard.p2Supply[1]}`;
-        interactiveTextSpace.textContent = `Select Move for Player ${myBoard.currentPlayer}`
-    }
-
-}
-*/
-
 //always remember to call your functions AFTER initializing everything
 
 const myBoard = new Gameboard(9)
-console.log(myBoard)
 printBoard()
 console.log("_______BEGIN LIVE MODE_______")
 //createClickBoard()
@@ -804,11 +756,13 @@ console.log("_______BEGIN LIVE MODE_______")
 
 /*
 left to do:
-- Correct and de-bug updateNeighbors 
-- check for koyas
 - update score
+- make roots
+- 
 
 done:
+- Corrected and de-bug updateNeighbors 
+- check for koyas
 - HUGE WIN!! Fixed updateNeighbors by creating fixed variables instead of strings
 - tracking supply of seeds and deserts
 - updating data based on input moves processed
