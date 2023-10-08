@@ -1,9 +1,15 @@
 const mainBoard = document.querySelector('#textSpace') //the place to render text
+const clickableBoard = document.querySelector('#clickBoard') //the place to render text
 const gameStats = document.querySelector('#game-stats') //the place to render text
+const interactiveTextSpace = document.querySelector('#text-content-for-interactive-board')
 gameStats.innerHTML = `Player 1:\n Seeds: 36 Deserts: 4\n Player 2:\n Seeds: 36 Deserts: 4`;
 
-
-//mainBoard.style.whiteSpace = 'pre-wrap';
+//svg details for pieces
+const otherTree = '<div class="piece tree"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
+const otherSeed = '<div class="piece seedA"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 32 40" style="enable-background:new 0 0 32 32;" xml:space="preserve"><path d="M6.5,14.5h19c0.276,0,0.5-0.224,0.5-0.5v-3.5c0-2.206-1.794-4-4-4h-5.5V3c0-0.276-0.224-0.5-0.5-0.5S15.5,2.724,15.5,3v3.5  H10c-2.206,0-4,1.794-4,4V14C6,14.276,6.224,14.5,6.5,14.5z"/><path d="M16,29.5c4.687,0,8.5-3.813,8.5-8.5v-5.5h-17V21C7.5,25.687,11.313,29.5,16,29.5z"/></svg></div>'
+const desertPiece = '<div class="piece desert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM312.6 63.7c-6.2-6.2-16.4-6.2-22.6 0L256 97.6 222.1 63.7c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l33.9 33.9-45.3 45.3-56.6-56.6c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l56.6 56.6-45.3 45.3L86.3 199.4c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L97.6 256 63.7 289.9c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l33.9-33.9 45.3 45.3-56.6 56.6c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l56.6-56.6 45.3 45.3-33.9 33.9c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L256 414.4l33.9 33.9c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-33.9-33.9 45.3-45.3 56.6 56.6c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-56.6-56.6 45.3-45.3 33.9 33.9c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L414.4 256l33.9-33.9c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0l-33.9 33.9-45.3-45.3 56.6-56.6c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0l-56.6 56.6-45.3-45.3 33.9-33.9c6.2-6.2 6.2-16.4 0-22.6zM142.9 256l45.3-45.3L233.4 256l-45.3 45.3L142.9 256zm67.9 67.9L256 278.6l45.3 45.3L256 369.1l-45.3-45.3zM278.6 256l45.3-45.3L369.1 256l-45.3 45.3L278.6 256zm22.6-67.9L256 233.4l-45.3-45.3L256 142.9l45.3 45.3z"/></svg></div>'
+const emptyPiece = '<div class="piece empty"><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></div>'
+const seedWheet = '<div class="piece seedB"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 32 40" style="enable-background:new 0 0 32 32;" xml:space="preserve"><path d="M6.5,14.5h19c0.276,0,0.5-0.224,0.5-0.5v-3.5c0-2.206-1.794-4-4-4h-5.5V3c0-0.276-0.224-0.5-0.5-0.5S15.5,2.724,15.5,3v3.5  H10c-2.206,0-4,1.794-4,4V14C6,14.276,6.224,14.5,6.5,14.5z"/><path d="M16,29.5c4.687,0,8.5-3.813,8.5-8.5v-5.5h-17V21C7.5,25.687,11.313,29.5,16,29.5z"/></svg></div>'
 
 let ouputPrint = document.getElementById("output")
 ouputPrint.textContent = `Player-1's move`
@@ -65,28 +71,192 @@ class Gameboard {
                 this.updateNeighborStates(index)
             }
         }
+        this.createClickBoard()
     }
+    //creates a UI board of div elements
+    createClickBoard() {
+        this.spaces.forEach((space) => {
+            //creates a new div
+            const square = document.createElement("div")
+            //adds attributes and classes to these divs
+            square.classList.add("square")
+            square.setAttribute("square-id", space.id)
+            //depending on the state, render the board. 
+            if (space.state == "XX") {
+                square.innerHTML = desertPiece;
+            }
+            else {
+                square.innerHTML = emptyPiece;
+                square.firstChild?.setAttribute('draggable', true)
+                //adds event listeners 
+                square.addEventListener('click', function () {
+                    const radioValue = document.querySelector('input[name="piece-selection"]:checked');
+                    console.log(this)
+                    //check that there is a value in the radio button
+                    if (radioValue) {
+                        const ourMove = new Move(myBoard.currentPlayer, "XX", square.getAttribute("square-id"))
+                        if (radioValue.value == "desert") {
+                            //we had a desert, do nothing
+                            console.log(ourMove);
+                            myBoard.processMove(ourMove);
+                        }
+                        else {
+                            //else add a seed
+                            if (myBoard.currentPlayer == 1) {
+                                //seed for player one
+                                ourMove.piece = "S1";
+                                console.log(ourMove);
+                                myBoard.processMove(ourMove);
+                            }
+                            else {
+                                //seed for player two
+                                ourMove.piece = "S2";
+                                console.log(ourMove);
+                                myBoard.processMove(ourMove);
+                            }
 
+                        }
+                        console.log("clicked! " + " selected: " + radioValue.value)
+                        //update the text components
+                        gameStats.innerHTML = `Player 1:\n Seeds: ${myBoard.p1Supply[0]} Deserts: ${myBoard.p1Supply[1]}\n Player 2:\n Seeds: ${myBoard.p2Supply[0]} Deserts: ${myBoard.p2Supply[1]}`;
+                        interactiveTextSpace.textContent = `Select Move for Player ${myBoard.currentPlayer}`
+                        myBoard.updateClickBoard()
+                    }
 
+                }, true);
+                //square.addEventListener('dragstart', dragStart)
+                //square.addEventListener('dragover', dragOver)
+                //square.addEventListener('drop', dragDrop)//listen for drop event
+            }
+            clickableBoard.append(square)
+
+        })
+    }
+    updateClickBoard() {
+        console.log("update Clickboard")
+        //wipe the inner HTML of the clickable Board
+        clickableBoard.innerHTML = "";
+        this.spaces.forEach((space) => {
+            //creates a new div
+            const square = document.createElement("div")
+            //adds attributes and classes to these divs
+            square.classList.add("square")
+            square.setAttribute("square-id", space.id)
+            //depending on the state, render the board. 
+            if (space.state == "XX") {
+                square.innerHTML = desertPiece;
+            }
+            else if (space.state == "S1") {
+                square.innerHTML = otherSeed;
+                square.firstChild?.setAttribute('draggable', true)
+            }
+            else if (space.state == "S2") {
+                square.innerHTML = seedWheet;
+                square.firstChild?.setAttribute('draggable', true)
+            }
+            else {
+                square.innerHTML = emptyPiece;
+                //adds event listeners 
+                square.addEventListener('click', function () {
+                    const radioValue = document.querySelector('input[name="piece-selection"]:checked');
+                    console.log(this)
+                    //check that there is a value in the radio button
+                    if (radioValue) {
+                        const ourMove = new Move(myBoard.currentPlayer, "XX", square.getAttribute("square-id"))
+                        if (radioValue.value == "desert") {
+                            //we had a desert, do nothing
+                            console.log(ourMove);
+                            myBoard.processMove(ourMove);
+                        }
+                        else {
+                            //else add a seed
+                            if (myBoard.currentPlayer == 1) {
+                                //seed for player one
+                                ourMove.piece = "S1";
+                                console.log(ourMove);
+                                myBoard.processMove(ourMove);
+                            }
+                            else {
+                                //seed for player two
+                                ourMove.piece = "S2";
+                                console.log(ourMove);
+                                myBoard.processMove(ourMove);
+                            }
+
+                        }
+                        console.log("clicked! " + " selected: " + radioValue.value)
+                        //update the text components
+                        gameStats.innerHTML = `Player 1:\n Seeds: ${myBoard.p1Supply[0]} Deserts: ${myBoard.p1Supply[1]}\n Player 2:\n Seeds: ${myBoard.p2Supply[0]} Deserts: ${myBoard.p2Supply[1]}`;
+                        interactiveTextSpace.textContent = `Select Move for Player ${myBoard.currentPlayer}`
+                        myBoard.updateClickBoard()
+                    }
+
+                }, true);
+                //square.addEventListener('dragstart', dragStart)
+                //square.addEventListener('dragover', dragOver)
+                //square.addEventListener('drop', dragDrop)//listen for drop event
+            }
+            clickableBoard.append(square)
+
+        })
+    }
+    /*
+    Didn't update event listeners.
+    updateClickBoard() {
+        console.log("update Clickboard")
+        //wipe the inner HTML of the clickable Board
+        clickableBoard.innerHTML = "";
+        //creates the board again with the new states
+        this.spaces.forEach((space) => {
+            //creates a new div
+            const square = document.createElement("div")
+            //adds attributes and classes to these divs
+            square.classList.add("square")
+            square.setAttribute("square-id", space.id)
+            //depending on the state, render the board. 
+            if (space.state == "XX") {
+                square.innerHTML = desertPiece;
+            }
+            else if (space.state == "S1") {
+                square.innerHTML = otherSeed;
+                square.firstChild?.setAttribute('draggable', true)
+            }
+            else if (space.state == "S2") {
+                square.innerHTML = seedWheet;
+                square.firstChild?.setAttribute('draggable', true)
+            }
+            else {
+                square.innerHTML = emptyPiece;
+            }
+            clickableBoard.append(square)
+
+        })
+    }
+    */
+
+    //PROBLEMATIC FUNCTION CURRENTLY
+    /*
+        need to fix this one
+    */
     updateNeighborStates(id) {
         //feeds in the array of spaces
         //every gameBoard has a width (plus border of XX)
 
         //sanity checks to ensure we did not catch a border space
-        if (this.spaces[id] < this.borderWidth) {
+        if (this.spaces[id].id < this.borderWidth) {
             //if this id is less than the width plus border 
             //we are in the first row of spaces = edge of the board
             console.log("edge of board")
         }
-        else if (this.spaces[id] % this.borderWidth == 0) {
+        else if (this.spaces[id].id % this.borderWidth == 0) {
             //if we are at the left edge of the board where mod width == 0
             console.log("edge of board")
         }
-        else if (this.spaces[id] % this.borderWidth == (this.borderWidth - 1)) {
+        else if (this.spaces[id].id % this.borderWidth == (this.borderWidth - 1)) {
             //of we are at the right edge of the board where mod width = width - 1
             console.log("edge of board")
         }
-        else if (this.spaces[id] > ((this.borderWidth * this.borderWidth) - this.borderWidth)) {
+        else if (this.spaces[id].id > ((this.borderWidth * this.borderWidth) - this.borderWidth)) {
             //if we are exactly one width from the end of the ID's == last row of the board
             console.log("edge of board")
         }
@@ -140,26 +310,39 @@ class Gameboard {
                 XX 42 43 44 45 46 47 48 XX
                 XX XX XX XX XX XX XX XX XX
             */
-            //console.log(this.spaces[id])
+
             //first, set the horizontal and vertical neighbors...
-            //grab the Space above us and update it's bottom middle neigborState
-            this.spaces[id - this.borderWidth].neighborStates[4] = this.spaces[id].state;
-            //grab the Space below us and update it's top middle neigborState
-            this.spaces[id + this.borderWidth].neighborStates[0] = this.spaces[id].state;
-            //grab the Space to the right of us and update it's left neigborState
-            this.spaces[id + 1].neighborStates[6] = this.spaces[id].state;
-            //grab the Space to the left of us and update it's right neigborState
-            this.spaces[id - 1].neighborStates[2] = this.spaces[id].state;
+
+            //HUGE ERROR HERE -- I think when I re-create the board, it is having issues accessing
+            //the data "beneath it" since those values have not been created yet building top to bottom
+
+            //wrap everthing in check for null statements
+            if ((this.spaces[(id - this.borderWidth)] !== null) && (this.spaces[(id - this.borderWidth)].neighborStates[4] !== null)) {
+                //grab the Space above us and update it's bottom middle neigborState
+                this.spaces[(id - this.borderWidth)].neighborStates[4] = this.spaces[id];
+            }
+            if ((this.spaces[(id - this.borderWidth)] !== null) && (this.spaces[(id - this.borderWidth)].neighborStates[0] !== null)) {
+                //grab the Space above us and update it's bottom middle neigborState
+                this.spaces[(id - this.borderWidth)].neighborStates[0] = this.spaces[id];
+            }
+            if ((this.spaces[(id + 1)] !== null) && (this.spaces[(id + 1)].neighborStates[6] !== null)) {
+                //grab the Space to the right of us and update it's left neigborState
+                this.spaces[id + 1].neighborStates[6] = this.spaces[id];
+            }
+            if ((this.spaces[id - 1] !== null) && (this.spaces[id - 1].neighborStates[2] !== null)) {
+                //grab the Space to the left of us and update it's right neigborState
+                this.spaces[id - 1].neighborStates[2] = this.spaces[id];
+            }
 
             //now the diagonal neighbors...
             //grab the Space above us to the left and update it's bottom left neigborState
-            this.spaces[id - (this.borderWidth - 1)].neighborStates[5] = this.spaces[id].state;
+            this.spaces[id - (this.borderWidth - 1)].neighborStates[5] = this.spaces[id];
             //grab the Space below us to the left and update it's top right neigborState
-            this.spaces[id + (this.borderWidth - 1)].neighborStates[1] = this.spaces[id].state;
+            this.spaces[id + (this.borderWidth - 1)].neighborStates[1] = this.spaces[id];
             //grab the Space above us to the right and update it's bottom right neigborState
-            this.spaces[id - (this.borderWidth + 1)].neighborStates[3] = this.spaces[id].state;
+            this.spaces[id - (this.borderWidth + 1)].neighborStates[3] = this.spaces[id];
             //grab the Space below us to the right and update it's top left neigborState
-            this.spaces[id + (this.borderWidth + 1)].neighborStates[7] = this.spaces[id].state;
+            this.spaces[id + (this.borderWidth + 1)].neighborStates[7] = this.spaces[id];
         }
 
     }
@@ -217,15 +400,20 @@ class Gameboard {
                         }
                     }
                 }
-                // invalid position
-                else return false;
+                else {
+                    // invalid position
+                    console.log("space is off the board")
+                    return false;
+                }
             }
             else {
+                //wrong player
                 console.log("wrong player")
             }
         }
         else {
             //space is occupied return false
+            console.log("not an empty space")
             return false;
         }
     }
@@ -235,8 +423,11 @@ class Gameboard {
         if (this.checkMove(move)) {
             //grab the space with the ID then updates the state
             this.spaces[move.position].state = move.piece;
+            //checks for koya created at that space
+            //PAUSED
+            //this.spaces[move.position].checkKoya()
             //state change has occured, update neighbors
-            this.updateNeighborStates(move.position)
+            //this.updateNeighborStates(move.position)
             //update the supply of pieces for each player
             if (move.player == 1) {
                 if (move.piece == "XX") {
@@ -268,10 +459,13 @@ class Gameboard {
             else this.currentPlayer = 1;
             //has to re-print the board
             printBoard()
+            //re-prints the bottom board too
+            this.updateClickBoard
         }
         else {
             //process invalid move
             console.log("INVALID MOVE")
+            console.log(this)
         }
     }
     //This is the one that is buggy
@@ -308,8 +502,8 @@ class Move {
     //position is hopefully a Space ID
     constructor(player, piece, position) {
         this.player = player;
+        this.piece = piece; // XX or S1 or S2
         this.position = position;
-        this.piece = piece;
     }
 }
 
@@ -326,7 +520,7 @@ class Space {
     burst = false;
     seedBank = 0;
 
-    neighborStates = ["XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"] // array to hold 8 neighbor states
+    neighborStates = [null, null, null, null, null, null, null, null] // array to hold 8 neighbors
     /*
         map of neighbor states, X is this Space, ID's mapped clockwise beginning at top
 
@@ -339,7 +533,22 @@ class Space {
     printInfo() {
         console.log(`Hello, my ID is ${this.id} and my info is ${this.player}${this.state}`);
     }
+    //NOT WORKING -- put on pause to fix CSS components for the UI
+    checkKoya() {
+        console.log("space: " + this.id + " checking for koya")
+        //don't apply to XX bricks
+        if (this.state != "XX") {
+            //checks if neighbors are null
+            if (this.neighborStates[0] != null && this.neighborStates[4] != null) {
+                //checks if neighbor states are pairs
+                if ((this.neighborStates[0].state == this.neighborStates[4].state) && this.state == this.neighborStates[4].state) {
+                    console.log('top and bottom and me match' + this.id)
+                }
+            }
 
+        }
+
+    }
     seedBurst() {
         //if we have bank to burst, return that value
         if (this.seedBank > 0) {
@@ -379,7 +588,38 @@ function createBoard(width) {
     }
 }
 */
+function processClickInput(spaceID) {
+    //selection of piece for a move on the board
+    const pieceSelection = document.querySelector('input[name="piece-selection"]:checked');
+    if (pieceSelection) {
+        //we have selected desert or seed
+        let currentMove = new Move(1, 'XX', spaceID) //creates the current move
+        console.log(pieceSelection.value + " at location " + spaceID);
+        //create and process move
+        if (this.currentPlayer == 1) {
+            if (pieceSelection.value == "desert") {
+                currentMove.piece = "XX"
+            }
+            else {
+                currentMove.piece = "S1"
+            }
+        }
+        else {
+            if (pieceSelection.value == "desert") {
+                currentMove.piece = "XX"
+            }
+            else {
+                currentMove.piece = "S2"
+            }
+        }
+        console.log(currentMove);
+    } else {
+        console.log('No radio button selected.');
+    }
+    console.log("this space ID: " + spaceID)
 
+
+}
 function printBoard() {
     //maps the state values of each Space into the textBoard
     allStates = myBoard.spaces.map((space) => space.state);
@@ -399,7 +639,10 @@ function printBoard() {
     mainBoard.textContent = textBoard;
 }
 
-//END OF GAME LOGIC
+
+//END OF FUNCTIONING GAME LOGIC
+
+
 
 //BEGIN USER INPUT LOGIC
 
@@ -410,7 +653,6 @@ function processInput() {
     const idValue = parseInt(id, 10);
 
     // Create a move object to store the inputs.
-
 
     //checks if the ID is actually an integer
     if (!Number.isInteger(idValue)) {
@@ -425,7 +667,7 @@ function processInput() {
         ouputPrint.innerHTML = `Player-${myBoard.currentPlayer}'s move`;
         gameStats.style.whitespace = 'pre-wrap'
         gameStats.innerHTML = `Player 1:\n Seeds: ${myBoard.p1Supply[0]} Deserts: ${myBoard.p1Supply[1]}\n Player 2:\n Seeds: ${myBoard.p2Supply[0]} Deserts: ${myBoard.p2Supply[1]}`;
-
+        interactiveTextSpace.textContent = `Select Move for Player ${myBoard.currentPlayer}`
     }
 
 }
@@ -438,11 +680,22 @@ function processInput() {
 const myBoard = new Gameboard(9)
 console.log(myBoard)
 printBoard()
+console.log("_______BEGIN LIVE MODE_______")
+//createClickBoard()
 
 
 
 /*
 left to do:
+-- small setback!
+    - need to fix updateNeighbors to not be reduntant
+        it is calling back and forth between neighbors and gumming up all the data
+        maybe we just keep it to states instead of objects? Or we write a SMALLER 
+        version of the function that can't spill out into accidental recurison 
+    - option to just revert to not calling the update neighbor function and just
+        pretend the game is get four in a row or something dumb like that. 
+    - I have a feeling 
+    
 - check for koyas
 - update score
 
