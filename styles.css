@@ -11,3 +11,68 @@
     width: 200px;
 
 }
+
+/*
+below is styling for the clickable board
+*/
+
+#clickBoard {
+    width: 550px;
+    height: 550px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: orange;
+
+}
+
+.square {
+    width: 50px;
+    height: 50px;
+    background-color: burlywood;
+    margin: 5px, 5px, 0px, 5px;
+    text-align: center;
+    position: relative;
+    align-items: center;
+}
+
+.square svg path {
+    position: relative;
+    z-index: -10;
+}
+
+.piece {
+    position: relative;
+    z-index: 5;
+    /**puts this in front of everything***/
+}
+
+.seedA {
+    fill: #608733;
+}
+
+.seedA:hover {
+    opacity: 0.5;
+}
+
+.seedB {
+    fill: #2a9d8f;
+}
+
+.seedB:hover {
+    opacity: 0.5;
+}
+
+
+.desert {
+    fill: #432818;
+}
+
+.empty {
+    opacity: 0.2;
+}
+
+#clickBoard-Input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
