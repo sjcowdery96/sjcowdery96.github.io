@@ -519,11 +519,18 @@ class Gameboard {
                         this.spaces[id].points++;
 
                         if (this.spaces[id].player == "P1") {
+                            //sets status to Tree!
                             this.spaces[id].state = "T1"
-                            //need to update appropriate roots
+                            //removes an additional piece for supply sake
+                            this.p1Supply[0]--;
+                            //still need to update appropriate roots
                         }
                         else {
+                            //sets status to Tree!
                             this.spaces[id].state = "T2"
+                            //removes an additional piece for supply sake
+                            this.p2Supply[0]--;
+                            //still need to update appropriate roots
                         }
                         //updates neighbors -- I AM A TREE!
                         this.updateNeighborStates(id)
@@ -541,9 +548,19 @@ class Gameboard {
                         console.log(this.spaces[id].neighborStates)
                         this.spaces[id].points++;
                         if (this.spaces[id].player == "P1") {
+                            //sets status to Tree!
                             this.spaces[id].state = "T1"
+                            //removes an additional piece for supply sake
+                            this.p1Supply[0]--;
+                            //still need to update appropriate roots
                         }
-                        else this.spaces[id].state = "T2"
+                        else {
+                            //sets status to Tree!
+                            this.spaces[id].state = "T2"
+                            //removes an additional piece for supply sake
+                            this.p2Supply[0]--;
+                            //still need to update appropriate roots
+                        }
                         //updates neighbors -- I AM A TREE!
                         this.updateNeighborStates(id)
                     }
@@ -560,9 +577,19 @@ class Gameboard {
                         console.log(this.spaces[id].neighborStates)
                         this.spaces[id].points++;
                         if (this.spaces[id].player == "P1") {
+                            //sets status to Tree!
                             this.spaces[id].state = "T1"
+                            //removes an additional piece for supply sake
+                            this.p1Supply[0]--;
+                            //still need to update appropriate roots
                         }
-                        else this.spaces[id].state = "T2"
+                        else {
+                            //sets status to Tree!
+                            this.spaces[id].state = "T2"
+                            //removes an additional piece for supply sake
+                            this.p2Supply[0]--;
+                            //still need to update appropriate roots
+                        }
                         //updates neighbors -- I AM A TREE!
                         this.updateNeighborStates(id)
                     }
@@ -581,9 +608,19 @@ class Gameboard {
 
                         this.spaces[id].points++;
                         if (this.spaces[id].player == "P1") {
+                            //sets status to Tree!
                             this.spaces[id].state = "T1"
+                            //removes an additional piece for supply sake
+                            this.p1Supply[0]--;
+                            //still need to update appropriate roots
                         }
-                        else this.spaces[id].state = "T2"
+                        else {
+                            //sets status to Tree!
+                            this.spaces[id].state = "T2"
+                            //removes an additional piece for supply sake
+                            this.p2Supply[0]--;
+                            //still need to update appropriate roots
+                        }
                         //updates neighbors -- I AM A TREE!
                         this.updateNeighborStates(id)
                     }
@@ -602,9 +639,19 @@ class Gameboard {
 
                         this.spaces[id].points++;
                         if (this.spaces[id].player == "P1") {
+                            //sets status to Tree!
                             this.spaces[id].state = "T1"
+                            //removes an additional piece for supply sake
+                            this.p1Supply[0]--;
+                            //still need to update appropriate roots
                         }
-                        else this.spaces[id].state = "T2"
+                        else {
+                            //sets status to Tree!
+                            this.spaces[id].state = "T2"
+                            //removes an additional piece for supply sake
+                            this.p2Supply[0]--;
+                            //still need to update appropriate roots
+                        }
                         //updates neighbors -- I AM A TREE!
                         this.updateNeighborStates(id)
                     }
@@ -623,9 +670,19 @@ class Gameboard {
 
                         this.spaces[id].points++;
                         if (this.spaces[id].player == "P1") {
+                            //sets status to Tree!
                             this.spaces[id].state = "T1"
+                            //removes an additional piece for supply sake
+                            this.p1Supply[0]--;
+                            //still need to update appropriate roots
                         }
-                        else this.spaces[id].state = "T2"
+                        else {
+                            //sets status to Tree!
+                            this.spaces[id].state = "T2"
+                            //removes an additional piece for supply sake
+                            this.p2Supply[0]--;
+                            //still need to update appropriate roots
+                        }
                         //updates neighbors -- I AM A TREE!
                         this.updateNeighborStates(id)
                     }
