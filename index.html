@@ -9,27 +9,42 @@
 
 <body>
     <h1>Basic Virtual Koya</h1>
-    <div id="mainBoard">
-        <p id="textSpace"> here is some text -- this means you screwed up </p>
-    </div>
-    <div class="inputs">
-        <h3>Possible Pieces: XX, S1, S2</h3>
+    <div id="interactive-board">
         <div>
-            <label>Piece</label> <input type="text" id="state" />
+            <h3> Game Stats</h3>
+            <p id="game-stats"> none </p>
         </div>
-        <div>
-            <label>ID</label> <input type="text" id="space-id" />
+        <div id="clickBoard-Input">
+            <p id="text-content-for-interactive-board"> Select Move for Player 1: </p>
+            <input type="radio" id="seed" name="piece-selection" value="seed">
+            <label for="seed">Seed</label>
+            <input type="radio" id="desert" name="piece-selection" value="desert">
+            <label for="desert">Desert</label>
+        </div>
+        <!-- hold off on adding this here <div><label>Submit Move?</label> <input type="submit" value="Submit" id="submission-button"></div> -->
+        <div id="clickBoard">
         </div>
     </div>
     <div>
-        <button type="button" onclick="processInput()">Submit Input</button>
-        <p id="output"></p>
-    </div>
-    <div>
-        <h3> Game Stats</h3>
-        <p id="game-stats"> none </p>
-    </div>
+        <h2>Data Board </h2>
+        <div id="mainBoard">
+            <p id="textSpace"> here is some text -- this means you screwed up </p>
+        </div>
+        <div class="inputs">
+            <h3>Possible Pieces: XX, S1, S2</h3>
+            <div>
+                <label>Piece</label> <input type="text" id="state" />
+            </div>
+            <div>
+                <label>ID</label> <input type="text" id="space-id" />
+            </div>
+        </div>
+        <div>
+            <button type="button" onclick="processInput()">Submit Input</button>
+            <p id="output"></p>
+        </div>
 
+    </div>
     <script src="app.js"></script>
 </body>
 
