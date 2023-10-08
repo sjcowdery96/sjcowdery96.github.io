@@ -6,7 +6,6 @@ const interactiveTextSpace = document.querySelector('#text-content-for-interacti
 let displayPlayerColor = document.querySelector('#currentPlayerColor');
 p1GameStats.textContent = `Player 1: Score: 0 \n Seeds: 36 \n Deserts: 4`;
 p2GameStats.textContent = `\n Player 2: Score 0 \n Seeds: 36 \n Deserts: 4`
-
 //svg details for pieces
 const otherTreeA = '<div class="piece treeA"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
 const otherTreeB = '<div class="piece treeB"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
@@ -15,8 +14,6 @@ const desertPiece = '<div class="piece desert"><svg xmlns="http://www.w3.org/200
 const emptyPiece = '<div class="piece empty"><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></div>'
 const seedWheet = '<div class="piece seedB"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 32 40" style="enable-background:new 0 0 32 32;" xml:space="preserve"><path d="M6.5,14.5h19c0.276,0,0.5-0.224,0.5-0.5v-3.5c0-2.206-1.794-4-4-4h-5.5V3c0-0.276-0.224-0.5-0.5-0.5S15.5,2.724,15.5,3v3.5  H10c-2.206,0-4,1.794-4,4V14C6,14.276,6.224,14.5,6.5,14.5z"/><path d="M16,29.5c4.687,0,8.5-3.813,8.5-8.5v-5.5h-17V21C7.5,25.687,11.313,29.5,16,29.5z"/></svg></div>'
 
-let ouputPrint = document.getElementById("output")
-//ouputPrint.textContent = `Player-1's move`
 let userInput;
 
 let textBoard = '' //holds the text in a string
@@ -43,6 +40,8 @@ class Gameboard {
         this.width = width
         //add the buffer border
         this.borderWidth = width + 2;
+        clickableBoard.style.width = (this.borderWidth * 50) + 'px'
+        clickableBoard.style.height = (this.borderWidth * 50) + 'px'
         for (let index = 0; index < (this.borderWidth * this.borderWidth); index++) {
             //initialize first row border
             if (index < this.borderWidth) {
@@ -197,7 +196,6 @@ class Gameboard {
                             }
 
                         }
-                        console.log("clicked! " + " selected: " + radioValue.value)
                         //update the text components
                         p1GameStats.textContent = `Player 1: Score: ${myBoard.p1Score} \n Seeds: ${myBoard.p1Supply[0]} \n Deserts: ${myBoard.p1Supply[1]}`;
                         p2GameStats.textContent = `Player 1: Score: ${myBoard.p2Score} \n Seeds: ${myBoard.p2Supply[0]} \n Deserts: ${myBoard.p2Supply[1]}`;
@@ -210,7 +208,6 @@ class Gameboard {
                             displayPlayerColor.style.backgroundColor = '#2a9d8f';
                         }
                         myBoard.updateClickBoard()
-                        console.log("current Player: " + myBoard.currentPlayer)
                     }
 
                 }, true);
@@ -225,6 +222,7 @@ class Gameboard {
 
     /*
        Fixed HUGE error -- "id" was reading as a string not an integer
+       new error -- trunks being used as roots!
     */
     updateNeighborStates(id) {
 
@@ -438,9 +436,9 @@ class Gameboard {
             //grab the space with the ID then updates the state
             this.spaces[move.position].state = move.piece;
             //state change has occured, update neighbors
-            this.updateNeighborStates(move.position)
-            //checks for koya created at that space
             this.checkKoya(move.position)
+            //state change has occured, update neighbors
+            this.updateNeighborStates(move.position)
             //updates scores
             this.updateScores();
             //update the supply of pieces for each player
@@ -472,9 +470,6 @@ class Gameboard {
                 this.currentPlayer = 2;
             }
             else this.currentPlayer = 1;
-            //has to re-print the board
-            printBoard()
-            //re-prints the bottom board too
             this.updateClickBoard
         }
         else {
@@ -510,8 +505,6 @@ class Gameboard {
     }
 
     checkKoya(id) {
-        console.log("space: " + id + " checking for koya. Neighborstates: ")
-        console.log(this.spaces[id].neighborStates)
         //don't apply to XX bricks or empty spaces which have player == null
         if (this.spaces[id].player != null) {
             //------CHECKING FOR "+" SHAPE KOYA---------
@@ -519,18 +512,21 @@ class Gameboard {
             if ((this.spaces[id].neighborStates[0] != null && this.spaces[id].neighborStates[4] != null) && (this.spaces[id].neighborStates[2] != null && this.spaces[id].neighborStates[6] != null)) {
                 //checks if neighbor states top and bottom are pairs
                 if ((this.spaces[id].neighborStates[0] == this.spaces[id].neighborStates[4]) && this.spaces[id].state == this.spaces[id].neighborStates[4]) {
-                    console.log("one branch matches ")
+
                     if ((this.spaces[id].neighborStates[2] == this.spaces[id].neighborStates[6]) && (this.spaces[id].state == this.spaces[id].neighborStates[2])) {
-                        console.log('plus shape koya at ' + id)
+                        console.log('+ shape koya at ' + id + " for " + this.spaces[id].player)
+                        console.log(this.spaces[id].neighborStates)
                         this.spaces[id].points++;
+
                         if (this.spaces[id].player == "P1") {
                             this.spaces[id].state = "T1"
                             //need to update appropriate roots
                         }
                         else {
                             this.spaces[id].state = "T2"
-                            //need to update appropriate roots
                         }
+                        //updates neighbors -- I AM A TREE!
+                        this.updateNeighborStates(id)
                     }
                 }
             }
@@ -539,14 +535,17 @@ class Gameboard {
             if ((this.spaces[id].neighborStates[1] != null && this.spaces[id].neighborStates[7] != null) && (this.spaces[id].neighborStates[3] != null && this.spaces[id].neighborStates[5] != null)) {
                 //checks if neighbor states top and bottom are pairs
                 if ((this.spaces[id].neighborStates[1] == this.spaces[id].neighborStates[5]) && this.spaces[id].state == this.spaces[id].neighborStates[5]) {
-                    console.log("one branch matches ")
+
                     if ((this.spaces[id].neighborStates[7] == this.spaces[id].neighborStates[3]) && (this.spaces[id].state == this.spaces[id].neighborStates[3])) {
-                        console.log('X shape koya at ' + id)
+                        console.log('X shape koya at ' + id + " for " + this.spaces[id].player)
+                        console.log(this.spaces[id].neighborStates)
                         this.spaces[id].points++;
                         if (this.spaces[id].player == "P1") {
                             this.spaces[id].state = "T1"
                         }
                         else this.spaces[id].state = "T2"
+                        //updates neighbors -- I AM A TREE!
+                        this.updateNeighborStates(id)
                     }
                 }
             }
@@ -555,14 +554,17 @@ class Gameboard {
             if ((this.spaces[id].neighborStates[2] != null) && (this.spaces[id].neighborStates[6] != null) && (this.spaces[id].neighborStates[7] != null) && (this.spaces[id].neighborStates[3] != null)) {
                 //checks if neighbor states left and right are pairs
                 if ((this.spaces[id].neighborStates[2] == this.spaces[id].neighborStates[6]) && this.spaces[id].state == this.spaces[id].neighborStates[6]) {
-                    console.log("one branch matches ")
+
                     if ((this.spaces[id].neighborStates[7] == this.spaces[id].neighborStates[3]) && (this.spaces[id].state == this.spaces[id].neighborStates[3])) {
-                        console.log(' `-. shape koya at ' + id)
+                        console.log(' `-. shape koya at ' + id + " for " + this.spaces[id].player)
+                        console.log(this.spaces[id].neighborStates)
                         this.spaces[id].points++;
                         if (this.spaces[id].player == "P1") {
                             this.spaces[id].state = "T1"
                         }
                         else this.spaces[id].state = "T2"
+                        //updates neighbors -- I AM A TREE!
+                        this.updateNeighborStates(id)
                     }
                 }
             }//END CHECKING FOR SHAPE
@@ -572,14 +574,18 @@ class Gameboard {
             if ((this.spaces[id].neighborStates[2] != null) && (this.spaces[id].neighborStates[6] != null) && (this.spaces[id].neighborStates[1] != null) && (this.spaces[id].neighborStates[5] != null)) {
                 //checks if neighbor states left and right are pairs
                 if ((this.spaces[id].neighborStates[2] == this.spaces[id].neighborStates[6]) && this.spaces[id].state == this.spaces[id].neighborStates[6]) {
-                    console.log("one branch matches ")
+
                     if ((this.spaces[id].neighborStates[1] == this.spaces[id].neighborStates[5]) && (this.spaces[id].state == this.spaces[id].neighborStates[5])) {
-                        console.log(' .-` shape koya at ' + id)
+                        console.log(' .-` shape koya at ' + id + " for " + this.spaces[id].player)
+                        console.log(this.spaces[id].neighborStates)
+
                         this.spaces[id].points++;
                         if (this.spaces[id].player == "P1") {
                             this.spaces[id].state = "T1"
                         }
                         else this.spaces[id].state = "T2"
+                        //updates neighbors -- I AM A TREE!
+                        this.updateNeighborStates(id)
                     }
                 }
             }//END CHECKING FOR SHAPE
@@ -589,14 +595,18 @@ class Gameboard {
             if ((this.spaces[id].neighborStates[0] != null) && (this.spaces[id].neighborStates[4] != null) && (this.spaces[id].neighborStates[1] != null) && (this.spaces[id].neighborStates[5] != null)) {
                 //checks if neighbor states left and right are pairs
                 if ((this.spaces[id].neighborStates[0] == this.spaces[id].neighborStates[4]) && this.spaces[id].state == this.spaces[id].neighborStates[4]) {
-                    console.log("one branch matches ")
+
                     if ((this.spaces[id].neighborStates[1] == this.spaces[id].neighborStates[5]) && (this.spaces[id].state == this.spaces[id].neighborStates[5])) {
-                        console.log(' .|` shape koya at ' + id)
+                        console.log(' .|` shape koya at ' + id + " for " + this.spaces[id].player)
+                        console.log(this.spaces[id].neighborStates)
+
                         this.spaces[id].points++;
                         if (this.spaces[id].player == "P1") {
                             this.spaces[id].state = "T1"
                         }
                         else this.spaces[id].state = "T2"
+                        //updates neighbors -- I AM A TREE!
+                        this.updateNeighborStates(id)
                     }
                 }
             }//END CHECKING FOR SHAPE
@@ -606,14 +616,18 @@ class Gameboard {
             if ((this.spaces[id].neighborStates[0] != null) && (this.spaces[id].neighborStates[4] != null) && (this.spaces[id].neighborStates[7] != null) && (this.spaces[id].neighborStates[3] != null)) {
                 //checks if neighbor states left and right are pairs
                 if ((this.spaces[id].neighborStates[0] == this.spaces[id].neighborStates[4]) && this.spaces[id].state == this.spaces[id].neighborStates[4]) {
-                    console.log("one branch matches ")
+
                     if ((this.spaces[id].neighborStates[7] == this.spaces[id].neighborStates[3]) && (this.spaces[id].state == this.spaces[id].neighborStates[3])) {
-                        console.log(' `|. shape koya at ' + id)
+                        console.log(' `|. shape koya at ' + id + " for " + this.spaces[id].player)
+                        console.log(this.spaces[id].neighborStates)
+
                         this.spaces[id].points++;
                         if (this.spaces[id].player == "P1") {
                             this.spaces[id].state = "T1"
                         }
                         else this.spaces[id].state = "T2"
+                        //updates neighbors -- I AM A TREE!
+                        this.updateNeighborStates(id)
                     }
                 }
             }//END CHECKING FOR SHAPE
@@ -691,34 +705,6 @@ class Space {
     }
 }
 
-/*
-OLD FUNCTION -- moved to inside Gameboard
-function createBoard(width) {
-    //add the buffer border
-    const borderWidth = width + 2;
-
-    for (let index = 0; index < (borderWidth * borderWidth); index++) {
-        //initialize first row border
-        if (index < borderWidth) {
-            gameBoard.push(new Space(index, 'XX'))
-        }
-        //initialize left side border
-        else if (index % borderWidth == 0) {
-            gameBoard.push(new Space(index, 'XX'))
-        }
-        //initialize right side border
-        else if (index % borderWidth == (borderWidth - 1)) {
-            gameBoard.push(new Space(index, 'XX'))
-        }
-        //initialize border on bottom
-        else if (index > ((borderWidth * borderWidth) - borderWidth)) {
-            gameBoard.push(new Space(index, 'XX'))
-        }
-        //everything else is the interior of the board
-        else gameBoard.push(new Space(index, '++'))
-    }
-}
-*/
 function processClickInput(spaceID) {
     //selection of piece for a move on the board
     const pieceSelection = document.querySelector('input[name="piece-selection"]:checked');
@@ -754,35 +740,16 @@ function processClickInput(spaceID) {
     console.log("this space ID: " + spaceID)
 
 }
-function printBoard() {
-    //maps the state values of each Space into the textBoard
-    allStates = myBoard.spaces.map((space) => space.state);
-
-    const boardFormattedStates = allStates.map((element, index) => {
-        if (index === 0) {
-            return element;
-        }
-        else if (index % (myBoard.width + 2) === 0) {
-            return `\n` + element;
-        } else {
-            return element;
-        }
-    });
-    //convert allStates into a string that folds at the desired width
-    textBoard = boardFormattedStates.join(" ");
-    mainBoard.textContent = textBoard;
-}
-
 
 //END OF FUNCTIONING GAME LOGIC
 
 
 //always remember to call your functions AFTER initializing everything
+//functional user calls
 
-const myBoard = new Gameboard(9)
-printBoard()
+const myBoard = new Gameboard(7)
 console.log("_______BEGIN LIVE MODE_______")
-//createClickBoard()
+
 
 
 
