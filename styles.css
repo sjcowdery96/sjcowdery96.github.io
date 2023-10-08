@@ -25,6 +25,20 @@ below is styling for the clickable board
 
 }
 
+#currentPlayerColor {
+    min-width: 3em;
+    min-height: 1em;
+    background-color: #608733;
+}
+
+.player-1 {
+    background-color: #608733;
+}
+
+.player-2 {
+    background-color: #2a9d8f;
+}
+
 .square {
     width: 50px;
     height: 50px;
@@ -61,6 +75,15 @@ below is styling for the clickable board
 .seedB:hover {
     opacity: 0.5;
 }
+
+.treeA {
+    fill: #608733;
+}
+
+.treeB {
+    fill: #2a9d8f;
+}
+
 
 
 .desert {
