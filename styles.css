@@ -7,9 +7,27 @@
     width: 315px;
 }
 
-#game-stats {
-    width: 200px;
+#interactive-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
+#all-game-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+#game-stats-p1 {
+    max-width: 300px;
+    color: #608733;
+}
+
+#game-stats-p2 {
+    max-width: 300px;
+    color: #2a9d8f;
 }
 
 /*
