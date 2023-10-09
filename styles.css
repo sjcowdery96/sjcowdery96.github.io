@@ -21,12 +21,12 @@
 }
 
 #game-stats-p1 {
-    max-width: 300px;
+    max-width: 400px;
     color: #608733;
 }
 
 #game-stats-p2 {
-    max-width: 300px;
+    max-width: 400px;
     color: #2a9d8f;
 }
 
@@ -75,7 +75,7 @@ below is styling for the clickable board
 .piece {
     position: relative;
     z-index: 5;
-    /**puts this in front of everything***/
+    /**puts the piece in front of everything***/
 }
 
 .seedA {

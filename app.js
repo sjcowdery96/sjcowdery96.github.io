@@ -4,8 +4,8 @@ const p1GameStats = document.querySelector('#game-stats-p1') //the place to rend
 const p2GameStats = document.querySelector('#game-stats-p2') //the place to render text
 const interactiveTextSpace = document.querySelector('#text-content-for-interactive-board')
 let displayPlayerColor = document.querySelector('#currentPlayerColor');
-p1GameStats.textContent = `Player 1: Score: 0 \n Seeds: 36 \n Deserts: 4`;
-p2GameStats.textContent = `\n Player 2: Score 0 \n Seeds: 36 \n Deserts: 4`
+p1GameStats.textContent = `Player 1: Score: 0 Seedbank: 0\n Seeds: 36 \n Deserts: 4`;
+p2GameStats.textContent = `\n Player 2: Score 0 Seedbank: 0\n Seeds: 36 \n Deserts: 4`
 //svg details for pieces
 const otherTreeA = '<div class="piece treeA"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
 const otherTreeB = '<div class="piece treeB"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
@@ -119,8 +119,8 @@ class Gameboard {
 
                         }
                         //update the text components
-                        p1GameStats.textContent = `Player 1: Score: ${myBoard.p1Score} \n Seeds: ${myBoard.p1Supply[0]} \n Deserts: ${myBoard.p1Supply[1]}`;
-                        p2GameStats.textContent = `Player 1: Score: ${myBoard.p2Score} \n Seeds: ${myBoard.p2Supply[0]} \n Deserts: ${myBoard.p2Supply[1]}`;
+                        p1GameStats.textContent = `Player 1: Score: ${myBoard.p1Score} Seedbank: ${myBoard.p1SeedBank}\n Seeds: ${myBoard.p1Supply[0]} \n Deserts: ${myBoard.p1Supply[1]}`;
+                        p2GameStats.textContent = `Player 2: Score: ${myBoard.p2Score} Seedbank: ${myBoard.p2SeedBank}\n Seeds: ${myBoard.p2Supply[0]} \n Deserts: ${myBoard.p2Supply[1]}`;
                         interactiveTextSpace.textContent = `Select Move for Player ${myBoard.currentPlayer} `
                         //quick matches the colors
                         if (myBoard.currentPlayer == 1) {
@@ -197,8 +197,8 @@ class Gameboard {
 
                         }
                         //update the text components
-                        p1GameStats.textContent = `Player 1: Score: ${myBoard.p1Score} \n Seeds: ${myBoard.p1Supply[0]} \n Deserts: ${myBoard.p1Supply[1]}`;
-                        p2GameStats.textContent = `Player 1: Score: ${myBoard.p2Score} \n Seeds: ${myBoard.p2Supply[0]} \n Deserts: ${myBoard.p2Supply[1]}`;
+                        p1GameStats.textContent = `Player 1: Score: ${myBoard.p1Score} Seedbank: ${myBoard.p1SeedBank}\n Seeds: ${myBoard.p1Supply[0]} \n Deserts: ${myBoard.p1Supply[1]}`;
+                        p2GameStats.textContent = `Player 2: Score: ${myBoard.p2Score} Seedbank: ${myBoard.p2SeedBank}\n Seeds: ${myBoard.p2Supply[0]} \n Deserts: ${myBoard.p2Supply[1]}`;
                         interactiveTextSpace.textContent = `Select Move for Player ${myBoard.currentPlayer}`
                         //quick matches the colors
                         if (myBoard.currentPlayer == 1) {
@@ -221,14 +221,9 @@ class Gameboard {
     }
 
     /*
-       Fixed HUGE error -- "id" was reading as a string not an integer
-       new error -- trunks being used as roots!
+      this method was the most challeinging to fix
     */
     updateNeighborStates(id) {
-
-        //spaces is the array of spaces within the gameboard
-        //feeds in the array of spaces
-        //every gameBoard has a width (plus border of XX)
 
         //sanity checks to ensure we did not catch a border space
         if (this.spaces[id].id < this.borderWidth) {
@@ -250,6 +245,7 @@ class Gameboard {
         }
 
         else {
+            //creates in-context integers to avoid array index errors
             let movableID = new Number(id)
             let fixedID = new Number(id)
             /*
@@ -308,7 +304,7 @@ class Gameboard {
             //check for koya 
             this.checkKoya(movableID)
             //----- Next Neighbor ---- //
-            //grab the Space above us and update it's bottom middle neigborState
+            //grab the Space below us and update it's top middle neigborState
             movableID = fixedID + this.borderWidth;
             this.spaces[movableID].neighborStates[0] = this.spaces[id].state;
             //check for koya 
@@ -359,12 +355,26 @@ class Gameboard {
 
     }
 
-    updateScore() {
-        //updates scores
-    }
 
-    updateSeedBanks() {
-        //updates seedbank data
+    updateSeedBank() {
+        //create temporary variables to track cumulative seedbank
+        let floatingP1SeedBank = 0;
+        let floatingP2SeedBank = 0;
+        //itterate through each space
+        this.spaces.forEach(space => {
+            //skip spaces with no seedbank
+            if (space.seedBank != 0) {
+                //add correct seedbank totals together
+                if (space.player == "P1") {
+                    floatingP1SeedBank += space.seedBank;
+                }
+                else {
+                    floatingP2SeedBank += space.seedBank;
+                }
+            }
+        });
+        this.p1SeedBank = floatingP1SeedBank;
+        this.p2SeedBank = floatingP2SeedBank;
     }
 
     checkMove(move) {
@@ -436,11 +446,13 @@ class Gameboard {
             //grab the space with the ID then updates the state
             this.spaces[move.position].state = move.piece;
             //state change has occured, update neighbors
-            this.checkKoya(move.position)
+            this.checkKoya(move.position);
             //state change has occured, update neighbors
-            this.updateNeighborStates(move.position)
+            this.updateNeighborStates(move.position);
             //updates scores
             this.updateScores();
+            //update seedbank
+            this.updateSeedBank();
             //update the supply of pieces for each player
             if (move.player == 1) {
                 if (move.piece == "XX") {
@@ -516,7 +528,9 @@ class Gameboard {
                     if ((this.spaces[id].neighborStates[2] == this.spaces[id].neighborStates[6]) && (this.spaces[id].state == this.spaces[id].neighborStates[2])) {
                         console.log('+ shape koya at ' + id + " for " + this.spaces[id].player)
                         console.log(this.spaces[id].neighborStates)
+                        //add points and seedbank
                         this.spaces[id].points++;
+                        this.spaces[id].seedBank++;
 
                         if (this.spaces[id].player == "P1") {
                             //sets status to Tree!
@@ -546,7 +560,10 @@ class Gameboard {
                     if ((this.spaces[id].neighborStates[7] == this.spaces[id].neighborStates[3]) && (this.spaces[id].state == this.spaces[id].neighborStates[3])) {
                         console.log('X shape koya at ' + id + " for " + this.spaces[id].player)
                         console.log(this.spaces[id].neighborStates)
+                        //add points and seedbank
                         this.spaces[id].points++;
+                        this.spaces[id].seedBank++;
+
                         if (this.spaces[id].player == "P1") {
                             //sets status to Tree!
                             this.spaces[id].state = "T1"
@@ -575,7 +592,10 @@ class Gameboard {
                     if ((this.spaces[id].neighborStates[7] == this.spaces[id].neighborStates[3]) && (this.spaces[id].state == this.spaces[id].neighborStates[3])) {
                         console.log(' `-. shape koya at ' + id + " for " + this.spaces[id].player)
                         console.log(this.spaces[id].neighborStates)
+                        //add points and seedbank
                         this.spaces[id].points++;
+                        this.spaces[id].seedBank++;
+
                         if (this.spaces[id].player == "P1") {
                             //sets status to Tree!
                             this.spaces[id].state = "T1"
@@ -606,7 +626,10 @@ class Gameboard {
                         console.log(' .-` shape koya at ' + id + " for " + this.spaces[id].player)
                         console.log(this.spaces[id].neighborStates)
 
+                        //add points and seedbank
                         this.spaces[id].points++;
+                        this.spaces[id].seedBank++;
+
                         if (this.spaces[id].player == "P1") {
                             //sets status to Tree!
                             this.spaces[id].state = "T1"
@@ -637,7 +660,10 @@ class Gameboard {
                         console.log(' .|` shape koya at ' + id + " for " + this.spaces[id].player)
                         console.log(this.spaces[id].neighborStates)
 
+                        //add points and seedbank
                         this.spaces[id].points++;
+                        this.spaces[id].seedBank++;
+
                         if (this.spaces[id].player == "P1") {
                             //sets status to Tree!
                             this.spaces[id].state = "T1"
@@ -668,7 +694,10 @@ class Gameboard {
                         console.log(' `|. shape koya at ' + id + " for " + this.spaces[id].player)
                         console.log(this.spaces[id].neighborStates)
 
+                        //add points and seedbank
                         this.spaces[id].points++;
+                        this.spaces[id].seedBank++;
+
                         if (this.spaces[id].player == "P1") {
                             //sets status to Tree!
                             this.spaces[id].state = "T1"
@@ -812,11 +841,12 @@ console.log("_______BEGIN LIVE MODE_______")
 
 /*
 left to do:
-- update score
 - make roots
 - 
 
 done:
+- update seedbank
+- update score
 - Corrected and de-bug updateNeighbors 
 - check for koyas
 - HUGE WIN!! Fixed updateNeighbors by creating fixed variables instead of strings
