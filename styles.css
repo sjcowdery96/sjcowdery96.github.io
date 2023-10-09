@@ -50,11 +50,11 @@ below is styling for the clickable board
 }
 
 .player-1 {
-    background-color: #608733;
+    fill: #608733;
 }
 
 .player-2 {
-    background-color: #2a9d8f;
+    fill: #2a9d8f;
 }
 
 .square {
@@ -78,28 +78,20 @@ below is styling for the clickable board
     /**puts the piece in front of everything***/
 }
 
-.seedA {
-    fill: #608733;
+.seed {
+    opacity: 0.75;
 }
 
-.seedA:hover {
+.seed:hover {
     opacity: 0.5;
 }
 
-.seedB {
-    fill: #2a9d8f;
+.root {
+    opacity: 0.9;
 }
 
-.seedB:hover {
-    opacity: 0.5;
-}
-
-.treeA {
-    fill: #608733;
-}
-
-.treeB {
-    fill: #2a9d8f;
+.tree {
+    opacity: 1.5;
 }
 
 
