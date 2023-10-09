@@ -1,26 +1,31 @@
+
+//selects the components we will be modifying throughout the game
 const mainBoard = document.querySelector('#textSpace') //the place to render text
 const clickableBoard = document.querySelector('#clickBoard') //the place to render text
 const p1GameStats = document.querySelector('#game-stats-p1') //the place to render text
 const p2GameStats = document.querySelector('#game-stats-p2') //the place to render text
 const interactiveTextSpace = document.querySelector('#text-content-for-interactive-board')
 let displayPlayerColor = document.querySelector('#currentPlayerColor');
+//sets the initial populated text for the player
 p1GameStats.textContent = `Player 1: Score: 0 Seedbank: 0\n Seeds: 36 \n Deserts: 4`;
 p2GameStats.textContent = `\n Player 2: Score 0 Seedbank: 0\n Seeds: 36 \n Deserts: 4`
-//svg details for pieces
-const TreeA = '<div class="piece treeA"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
-const TreeB = '<div class="piece treeB"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
-const seedA = '<div class="piece seedA"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 32 40" style="enable-background:new 0 0 32 32;" xml:space="preserve"><path d="M6.5,14.5h19c0.276,0,0.5-0.224,0.5-0.5v-3.5c0-2.206-1.794-4-4-4h-5.5V3c0-0.276-0.224-0.5-0.5-0.5S15.5,2.724,15.5,3v3.5  H10c-2.206,0-4,1.794-4,4V14C6,14.276,6.224,14.5,6.5,14.5z"/><path d="M16,29.5c4.687,0,8.5-3.813,8.5-8.5v-5.5h-17V21C7.5,25.687,11.313,29.5,16,29.5z"/></svg></div>'
-const seedB = '<div class="piece seedB"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 32 40" style="enable-background:new 0 0 32 32;" xml:space="preserve"><path d="M6.5,14.5h19c0.276,0,0.5-0.224,0.5-0.5v-3.5c0-2.206-1.794-4-4-4h-5.5V3c0-0.276-0.224-0.5-0.5-0.5S15.5,2.724,15.5,3v3.5  H10c-2.206,0-4,1.794-4,4V14C6,14.276,6.224,14.5,6.5,14.5z"/><path d="M16,29.5c4.687,0,8.5-3.813,8.5-8.5v-5.5h-17V21C7.5,25.687,11.313,29.5,16,29.5z"/></svg></div>'
+//adds svg details for pieces to render
+const TreeA = '<div class="piece tree player-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
+const TreeB = '<div class="piece tree player-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
+const seedA = '<div class="piece seed player-1"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 32 40" style="enable-background:new 0 0 32 32;" xml:space="preserve"><path d="M6.5,14.5h19c0.276,0,0.5-0.224,0.5-0.5v-3.5c0-2.206-1.794-4-4-4h-5.5V3c0-0.276-0.224-0.5-0.5-0.5S15.5,2.724,15.5,3v3.5  H10c-2.206,0-4,1.794-4,4V14C6,14.276,6.224,14.5,6.5,14.5z"/><path d="M16,29.5c4.687,0,8.5-3.813,8.5-8.5v-5.5h-17V21C7.5,25.687,11.313,29.5,16,29.5z"/></svg></div>'
+const seedB = '<div class="piece seed player-2"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 32 40" style="enable-background:new 0 0 32 32;" xml:space="preserve"><path d="M6.5,14.5h19c0.276,0,0.5-0.224,0.5-0.5v-3.5c0-2.206-1.794-4-4-4h-5.5V3c0-0.276-0.224-0.5-0.5-0.5S15.5,2.724,15.5,3v3.5  H10c-2.206,0-4,1.794-4,4V14C6,14.276,6.224,14.5,6.5,14.5z"/><path d="M16,29.5c4.687,0,8.5-3.813,8.5-8.5v-5.5h-17V21C7.5,25.687,11.313,29.5,16,29.5z"/></svg></div>'
+const rootA = '<div class="piece root player-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg></div>'
+const rootB = '<div class="piece root player-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg></div>'
 const desertPiece = '<div class="piece desert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM312.6 63.7c-6.2-6.2-16.4-6.2-22.6 0L256 97.6 222.1 63.7c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l33.9 33.9-45.3 45.3-56.6-56.6c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l56.6 56.6-45.3 45.3L86.3 199.4c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L97.6 256 63.7 289.9c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l33.9-33.9 45.3 45.3-56.6 56.6c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l56.6-56.6 45.3 45.3-33.9 33.9c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L256 414.4l33.9 33.9c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-33.9-33.9 45.3-45.3 56.6 56.6c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-56.6-56.6 45.3-45.3 33.9 33.9c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L414.4 256l33.9-33.9c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0l-33.9 33.9-45.3-45.3 56.6-56.6c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0l-56.6 56.6-45.3-45.3 33.9-33.9c6.2-6.2 6.2-16.4 0-22.6zM142.9 256l45.3-45.3L233.4 256l-45.3 45.3L142.9 256zm67.9 67.9L256 278.6l45.3 45.3L256 369.1l-45.3-45.3zM278.6 256l45.3-45.3L369.1 256l-45.3 45.3L278.6 256zm22.6-67.9L256 233.4l-45.3-45.3L256 142.9l45.3 45.3z"/></svg></div>'
 const emptyPiece = '<div class="piece empty"><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></div>'
 
+//I think these may be variables left over from previous versions
 let userInput;
-
 let textBoard = '' //holds the text in a string
 let allStates = []; //hold the states of all Spaces
 let gameBoard = []; //creates an array of Spaces
 
-
+//our primary class for creating the gameBoard instance
 class Gameboard {
     //empty array to hold Spaces objects
     spaces = [];
@@ -76,7 +81,7 @@ class Gameboard {
             }
         }
     }
-    //creates a UI board of div elements
+    //creates a UI board of div elements with event listeners
     createClickBoard() {
         this.spaces.forEach((space) => {
             //creates a new div
@@ -133,14 +138,20 @@ class Gameboard {
                     }
 
                 }, true);
+
+                /*
+                FOR LATER -- adding drag and drop functionality for our pieces
+
                 //square.addEventListener('dragstart', dragStart)
                 //square.addEventListener('dragover', dragOver)
                 //square.addEventListener('drop', dragDrop)//listen for drop event
+                */
             }
             clickableBoard.append(square)
 
         })
     }
+    //fires to update the UI clickable elements on the webpage
     updateClickBoard() {
         //wipe the inner HTML of the clickable Board
         clickableBoard.innerHTML = "";
@@ -168,6 +179,14 @@ class Gameboard {
             }
             else if (space.state == "T2") {
                 square.innerHTML = TreeB;
+                square.firstChild?.setAttribute('draggable', false)
+            }
+            else if (space.state == "R1") {
+                square.innerHTML = rootA;
+                square.firstChild?.setAttribute('draggable', false)
+            }
+            else if (space.state == "R2") {
+                square.innerHTML = rootB;
                 square.firstChild?.setAttribute('draggable', false)
             }
             else {
@@ -221,7 +240,10 @@ class Gameboard {
     }
 
     /*
-      this method was the most challeinging to fix
+      This method was the most challeinging to write!!
+      In order for each space to know if it is a correct shape, I needed to save
+      each "neighbor state" in that space to constantly check if a state change
+      resulted in a Koya shape being created. More context is below.
     */
     updateNeighborStates(id) {
 
@@ -355,7 +377,7 @@ class Gameboard {
 
     }
 
-
+    //basic function to update the board state variables for SeedBank
     updateSeedBank() {
         //create temporary variables to track cumulative seedbank
         let floatingP1SeedBank = 0;
@@ -376,7 +398,7 @@ class Gameboard {
         this.p1SeedBank = floatingP1SeedBank;
         this.p2SeedBank = floatingP2SeedBank;
     }
-
+    //basic logic to check a move matches the game logic
     checkMove(move) {
         //confirms target space is not occupied
         if (this.spaces[move.position].player == null) {
@@ -440,6 +462,7 @@ class Gameboard {
         }
     }
 
+    //workhorse function for processing our move inputs from the user
     processMove(move) {
         //checks if valid move
         if (this.checkMove(move)) {
@@ -490,7 +513,7 @@ class Gameboard {
             console.log(this)
         }
     }
-
+    //checks if the input is within the bounds of the gameboard 
     checkValidPosition(position) {
         // first row border
         if (position < this.borderWidth) {
@@ -516,6 +539,114 @@ class Gameboard {
         else return true;
     }
 
+    //swich function for checking Koya shapes and updating roots of trees
+    createRoots(id, koyaShape) {
+        const fixedID = new Number(id, 10);
+        let movableID = new Number(id, 10);
+
+        //processes the koya move to update roots using a switch statement
+        switch (koyaShape) {
+            case '+':
+                //need to convert the top, bottom, left, and right spaces to state = "R" + player
+                //convert top
+                movableID = fixedID - this.borderWidth
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert bottom
+                movableID = fixedID + this.borderWidth
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert right
+                movableID = fixedID + 1
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert left
+                movableID = fixedID - 1
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                break;
+            case 'X':
+                console.log('X Koya');
+                //need to convert the top right, bottom left, top left, and bottom right spaces to state = "R" + player
+                //convert top right
+                movableID = (fixedID - this.borderWidth) + 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert bottom left 
+                movableID = (fixedID + this.borderWidth) - 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert bottom right 
+                movableID = (fixedID + this.borderWidth) + 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert top left
+                movableID = (fixedID - this.borderWidth) - 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                break;
+            case '`-.':
+                console.log('Sneaky Koya A');
+                //need to convert the top left, bottom right, middle left, and middle right spaces to state = "R" + player
+                //convert top left
+                movableID = (fixedID - this.borderWidth) - 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert bottom right 
+                movableID = (fixedID + this.borderWidth) + 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert middle left
+                movableID = fixedID - 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert middle right
+                movableID = fixedID + 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                break;
+            case '.-`':
+                console.log('Sneaky Koya B');
+                //need to convert the top right, bottom left, middle left, and middle right spaces to state = "R" + player
+                //convert top right
+                movableID = (fixedID - this.borderWidth) + 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert bottom left 
+                movableID = (fixedID + this.borderWidth) - 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert middle left
+                movableID = fixedID - 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert middle right
+                movableID = fixedID + 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                break;
+            case '`|.':
+                console.log('Sneaky Koya C');
+                //need to convert the top left, bottom right, middle top, and middle bottom spaces to state = "R" + player
+                //convert top left
+                movableID = (fixedID - this.borderWidth) - 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert bottom right 
+                movableID = (fixedID + this.borderWidth) + 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert middle top
+                movableID = fixedID - this.borderWidth;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert middle bottom
+                movableID = fixedID + this.borderWidth;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                break;
+            case '.|`':
+                console.log('Sneaky Koya D');
+                //need to convert the bottom left, top right, middle top, and middle bottom spaces to state = "R" + player
+                //convert bottom left
+                movableID = (fixedID + this.borderWidth) - 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert top right 
+                movableID = (fixedID - this.borderWidth) + 1;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert middle top
+                movableID = fixedID - this.borderWidth;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                //convert middle bottom
+                movableID = fixedID + this.borderWidth;
+                this.spaces[movableID].state = "R" + this.currentPlayer
+                break;
+            default:
+                console.log('something went wrong with createRoots!');
+        }
+
+    }
+    //beefy function for checking for the specific scoring Koya shapes 
     checkKoya(id) {
         //don't apply to XX bricks or empty spaces which have player == null
         if (this.spaces[id].player != null) {
@@ -537,15 +668,15 @@ class Gameboard {
                             this.spaces[id].state = "T1"
                             //removes an additional piece for supply sake
                             this.p1Supply[0]--;
-                            //still need to update appropriate roots
                         }
                         else {
                             //sets status to Tree!
                             this.spaces[id].state = "T2"
                             //removes an additional piece for supply sake
                             this.p2Supply[0]--;
-                            //still need to update appropriate roots
                         }
+                        //create roots
+                        this.createRoots(id, "+");
                         //updates neighbors -- I AM A TREE!
                         this.updateNeighborStates(id)
                     }
@@ -578,6 +709,8 @@ class Gameboard {
                             this.p2Supply[0]--;
                             //still need to update appropriate roots
                         }
+                        //create roots
+                        this.createRoots(id, "X");
                         //updates neighbors -- I AM A TREE!
                         this.updateNeighborStates(id)
                     }
@@ -610,6 +743,8 @@ class Gameboard {
                             this.p2Supply[0]--;
                             //still need to update appropriate roots
                         }
+                        //create roots
+                        this.createRoots(id, "`-.");
                         //updates neighbors -- I AM A TREE!
                         this.updateNeighborStates(id)
                     }
@@ -644,6 +779,8 @@ class Gameboard {
                             this.p2Supply[0]--;
                             //still need to update appropriate roots
                         }
+                        //create roots
+                        this.createRoots(id, ".-`");
                         //updates neighbors -- I AM A TREE!
                         this.updateNeighborStates(id)
                     }
@@ -678,6 +815,8 @@ class Gameboard {
                             this.p2Supply[0]--;
                             //still need to update appropriate roots
                         }
+                        //create roots
+                        this.createRoots(id, ".|`");
                         //updates neighbors -- I AM A TREE!
                         this.updateNeighborStates(id)
                     }
@@ -712,6 +851,8 @@ class Gameboard {
                             this.p2Supply[0]--;
                             //still need to update appropriate roots
                         }
+                        //create roots
+                        this.createRoots(id, "`|.");
                         //updates neighbors -- I AM A TREE!
                         this.updateNeighborStates(id)
                     }
@@ -721,7 +862,7 @@ class Gameboard {
         }
 
     }
-
+    //simple function to update scores
     updateScores() {
         //create temporary variables to track cumulative score
         let floatingP1Score = 0;
@@ -742,7 +883,7 @@ class Gameboard {
 
 }
 
-
+//this class holds the components of every move
 class Move {
     //player is hopefully a string
     //position is hopefully a Space ID
@@ -754,7 +895,7 @@ class Move {
 }
 
 
-//Hardest working class in the game logic, the Space object
+//Space object holds the necessary game data for each space
 class Space {
     constructor(id, state) {
         this.id = id; //each square will be created with an ID
@@ -790,7 +931,7 @@ class Space {
         else return false;
     }
 }
-
+//processes the input from the user based on the click location and radio button
 function processClickInput(spaceID) {
     //selection of piece for a move on the board
     const pieceSelection = document.querySelector('input[name="piece-selection"]:checked');
@@ -829,28 +970,48 @@ function processClickInput(spaceID) {
 
 //END OF FUNCTIONING GAME LOGIC
 
-
 //always remember to call your functions AFTER initializing everything
 //functional user calls
-
-const myBoard = new Gameboard(7)
+const myBoard = new Gameboard(9) // creates a 9x9 board with a border
 console.log("_______BEGIN LIVE MODE_______")
 
-
-
+//below is just my notes to myself, feel free to read!
 
 /*
-left to do:
-- make roots
-- 
+------LEFT TO DO------
+- Add ReadME
+    PROBLEM: I haven't spent enough time on the ReadME file.
 
-done:
+    Need to add the basic "what" of Koya to the readme and play around with
+    the formatting stuff. Should take less than an hour to complete.
+
+- Re-use roots
+    PROBLEM: If roots are matched to seeds, they don't create new roots or trees.
+
+    Maybe we could change the way states are handled to just be "buildable" or not
+    then have a different variable in Space to hold the actual render for the board.
+    Changing the print graphics will be WAY easier than changing the game logic
+- Fivers
+    PROBLEM: there is no current way to create five in a row koyas
+    I might need to extend neighborStates to five....(UGH)
+    ..or.. hold each neighborstate in a double array [[],[],[],[]] for root channels
+    OR... only create that array for established TRUNKS! 
+    I guess that doesn't help fivers at inception, but I think that could work
+    for long term for trunks and I could even call some separate checkTrunks()
+    function for that on each Space
+- Doubles, Triples, etc.
+    PROBLEM: I have not created the logic or render capabiliies for compound builds
+    Building off of the array idea from the last challege, perhaps 
+
+-------DONE--------
+- make basic roots
 - update seedbank
 - update score
 - Corrected and de-bug updateNeighbors 
 - check for koyas
 - HUGE WIN!! Fixed updateNeighbors by creating fixed variables instead of strings
 - tracking supply of seeds and deserts
+- Working UI and clickable spaces and pieces!
 - updating data based on input moves processed
 - fixed check logic on checkValidPosition
 - render board correctly in simple text form
