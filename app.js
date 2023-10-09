@@ -7,12 +7,12 @@ let displayPlayerColor = document.querySelector('#currentPlayerColor');
 p1GameStats.textContent = `Player 1: Score: 0 Seedbank: 0\n Seeds: 36 \n Deserts: 4`;
 p2GameStats.textContent = `\n Player 2: Score 0 Seedbank: 0\n Seeds: 36 \n Deserts: 4`
 //svg details for pieces
-const otherTreeA = '<div class="piece treeA"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
-const otherTreeB = '<div class="piece treeB"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
-const otherSeed = '<div class="piece seedA"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 32 40" style="enable-background:new 0 0 32 32;" xml:space="preserve"><path d="M6.5,14.5h19c0.276,0,0.5-0.224,0.5-0.5v-3.5c0-2.206-1.794-4-4-4h-5.5V3c0-0.276-0.224-0.5-0.5-0.5S15.5,2.724,15.5,3v3.5  H10c-2.206,0-4,1.794-4,4V14C6,14.276,6.224,14.5,6.5,14.5z"/><path d="M16,29.5c4.687,0,8.5-3.813,8.5-8.5v-5.5h-17V21C7.5,25.687,11.313,29.5,16,29.5z"/></svg></div>'
+const TreeA = '<div class="piece treeA"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
+const TreeB = '<div class="piece treeB"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path d="M82.1288452,83.4249649L67.8265839,58.3781891l8.4189987-0.0356483L63.4737701,36.4630661l6.2566147,0.0289192  l-9.7137642-16.9974174L50.3047638,2.5l-9.8610153,16.9071693l-9.8629093,16.9071655l6.4361591,0.0295944L24.3145351,58.5730057  l7.6441841-0.0336304L17.8711529,83.0674515l25.5255756,0.137886V97.5h12.6112633V83.2765808L82.1288452,83.4249649z"/></svg></div>'
+const seedA = '<div class="piece seedA"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 32 40" style="enable-background:new 0 0 32 32;" xml:space="preserve"><path d="M6.5,14.5h19c0.276,0,0.5-0.224,0.5-0.5v-3.5c0-2.206-1.794-4-4-4h-5.5V3c0-0.276-0.224-0.5-0.5-0.5S15.5,2.724,15.5,3v3.5  H10c-2.206,0-4,1.794-4,4V14C6,14.276,6.224,14.5,6.5,14.5z"/><path d="M16,29.5c4.687,0,8.5-3.813,8.5-8.5v-5.5h-17V21C7.5,25.687,11.313,29.5,16,29.5z"/></svg></div>'
+const seedB = '<div class="piece seedB"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 32 40" style="enable-background:new 0 0 32 32;" xml:space="preserve"><path d="M6.5,14.5h19c0.276,0,0.5-0.224,0.5-0.5v-3.5c0-2.206-1.794-4-4-4h-5.5V3c0-0.276-0.224-0.5-0.5-0.5S15.5,2.724,15.5,3v3.5  H10c-2.206,0-4,1.794-4,4V14C6,14.276,6.224,14.5,6.5,14.5z"/><path d="M16,29.5c4.687,0,8.5-3.813,8.5-8.5v-5.5h-17V21C7.5,25.687,11.313,29.5,16,29.5z"/></svg></div>'
 const desertPiece = '<div class="piece desert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM312.6 63.7c-6.2-6.2-16.4-6.2-22.6 0L256 97.6 222.1 63.7c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l33.9 33.9-45.3 45.3-56.6-56.6c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l56.6 56.6-45.3 45.3L86.3 199.4c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L97.6 256 63.7 289.9c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l33.9-33.9 45.3 45.3-56.6 56.6c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l56.6-56.6 45.3 45.3-33.9 33.9c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L256 414.4l33.9 33.9c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-33.9-33.9 45.3-45.3 56.6 56.6c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-56.6-56.6 45.3-45.3 33.9 33.9c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L414.4 256l33.9-33.9c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0l-33.9 33.9-45.3-45.3 56.6-56.6c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0l-56.6 56.6-45.3-45.3 33.9-33.9c6.2-6.2 6.2-16.4 0-22.6zM142.9 256l45.3-45.3L233.4 256l-45.3 45.3L142.9 256zm67.9 67.9L256 278.6l45.3 45.3L256 369.1l-45.3-45.3zM278.6 256l45.3-45.3L369.1 256l-45.3 45.3L278.6 256zm22.6-67.9L256 233.4l-45.3-45.3L256 142.9l45.3 45.3z"/></svg></div>'
 const emptyPiece = '<div class="piece empty"><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></div>'
-const seedWheet = '<div class="piece seedB"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 32 40" style="enable-background:new 0 0 32 32;" xml:space="preserve"><path d="M6.5,14.5h19c0.276,0,0.5-0.224,0.5-0.5v-3.5c0-2.206-1.794-4-4-4h-5.5V3c0-0.276-0.224-0.5-0.5-0.5S15.5,2.724,15.5,3v3.5  H10c-2.206,0-4,1.794-4,4V14C6,14.276,6.224,14.5,6.5,14.5z"/><path d="M16,29.5c4.687,0,8.5-3.813,8.5-8.5v-5.5h-17V21C7.5,25.687,11.313,29.5,16,29.5z"/></svg></div>'
 
 let userInput;
 
@@ -155,19 +155,19 @@ class Gameboard {
                 square.innerHTML = desertPiece;
             }
             else if (space.state == "S1") {
-                square.innerHTML = otherSeed;
+                square.innerHTML = seedA;
                 square.firstChild?.setAttribute('draggable', true)
             }
             else if (space.state == "S2") {
-                square.innerHTML = seedWheet;
+                square.innerHTML = seedB;
                 square.firstChild?.setAttribute('draggable', true)
             }
             else if (space.state == "T1") {
-                square.innerHTML = otherTreeA;
+                square.innerHTML = TreeA;
                 square.firstChild?.setAttribute('draggable', false)
             }
             else if (space.state == "T2") {
-                square.innerHTML = otherTreeB;
+                square.innerHTML = TreeB;
                 square.firstChild?.setAttribute('draggable', false)
             }
             else {
