@@ -3,23 +3,13 @@ Assignment for Milestone Project 1 uChicago Bootcamp
 This game is a simplified version of Koya
 
 ## Basic Gameplay
-The goal of koya is to build as many trees as possible. Each tree is worth a point and are built by combining two axes of seed pieces. For example in the "+" shape  or the "x" shape below.
+The goal of koya is to build as many trees as possible. Each tree is worth a point and are built by combining two pairs of symmetric seed pieces around a center. For example in a "+" shape or "x" shape. 
 
-   X       X   X
- X X X       X
-   X       X   X
-
-Other possible shapes are below with the same logic of combining two symetric pairs around a center.
-
-X               X     X X        X X
-X X X       X X X       X        X 
-    X       X           X X    X X 
-
-By creating two symetric pairs with the same center, a tree is created and the "seed" pieces are converted to roots. 
-
-The game continues until each player is out of pieces and the player with the highest score wins!
+Other shapes can be created by creating two symetric pairs with the same seed at the center. Once this happens a tree is created and the "seed" pieces are converted to roots. 
 
 Desert pieces can be used to block your opponent, but they cannot become roots to trees.
+
+The game continues until each player is out of pieces and the player with the highest score wins! Check the resources below for a full tutorial on the gameplay. 
 
 ### References
 
